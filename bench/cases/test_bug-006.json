@@ -1,0 +1,41 @@
+{
+ "id": "test_bug-006",
+ "split": "test",
+ "truth": {
+  "category": "test_bug",
+  "culprit_file": "tests/test_pathutils.py",
+  "culprit_function": "test_augpath_multidot"
+ },
+ "meta": {
+  "op": "assert_flip",
+  "line_before": "assert augpath('foo.tar.gz', ext='.zip', multidot=False) == 'foo.tar.zip'",
+  "line_after": "assert augpath('foo.tar.gz', ext='.zip', multidot=False) != 'foo.tar.zip'",
+  "n_noise": 0,
+  "n_failing": 1,
+  "suite_seconds": 2.87
+ },
+ "diff": "diff --git a/tests/test_pathutils.py b/tests/test_pathutils.py\n--- a/tests/test_pathutils.py\n+++ b/tests/test_pathutils.py\n@@ -16,7 +16,7 @@\n     assert augpath('foo.tar.gz', suffix='_new', multidot=True) == 'foo_new.tar.gz'\n     assert augpath('foo.tar.gz', suffix='_new', multidot=False) == 'foo.tar_new.gz'\n     assert augpath('foo.tar.gz', ext='.zip', multidot=True) == 'foo.zip'\n-    assert augpath('foo.tar.gz', ext='.zip', multidot=False) == 'foo.tar.zip'\n+    assert augpath('foo.tar.gz', ext='.zip', multidot=False) != 'foo.tar.zip'\n \n \n def test_shrinkuser():\n",
+ "log": "........................................................................ [ 13%]\n...................................................................... [ 27%]\n.............................................................. [ 38%]\n........................................................................ [ 52%]\n..........................F............................................. [ 66%]\n........................................................................ [ 80%]\n........................................................................ [ 93%]\n.................................                                        [100%]\n=================================== FAILURES ===================================\n____________________________ test_augpath_multidot _____________________________\ntests/test_pathutils.py:19: in test_augpath_multidot\n    assert augpath('foo.tar.gz', ext='.zip', multidot=False) != 'foo.tar.zip'\nE   AssertionError: assert 'foo.tar.zip' != 'foo.tar.zip'\nE    +  where 'foo.tar.zip' = augpath('foo.tar.gz', ext='.zip', multidot=False)\n=========================== short test summary info ============================\nFAILED tests/test_pathutils.py::test_augpath_multidot - AssertionError: asser...\n1 failed, 524 passed, 12 subtests passed in 2.56s\n",
+ "files": {
+  "tests/test_pathutils.py": "from os.path import expanduser, join, normpath\n\nfrom boltons.pathutils import augpath, shrinkuser, expandpath\n\n\ndef test_augpath():\n    assert augpath('foo.bar') == 'foo.bar'\n    assert augpath('foo.bar', dpath='/tmp') == join('/tmp', 'foo.bar')\n    assert augpath(join('a', 'b', 'foo.bar'), base='qux') == join('a', 'b', 'qux.bar')\n    assert augpath('foo.bar', prefix='p_', base='bar', suffix='_s', ext='.baz') == 'p_bar_s.baz'\n    assert augpath('foo', ext='.txt') == 'foo.txt'\n    assert augpath('foo.bar', ext='') == 'foo'\n\n\ndef test_augpath_multidot():\n    assert augpath('foo.tar.gz', suffix='_new', multidot=True) == 'foo_new.tar.gz'\n    assert augpath('foo.tar.gz', suffix='_new', multidot=False) == 'foo.tar_new.gz'\n    assert augpath('foo.tar.gz', ext='.zip', multidot=True) == 'foo.zip'\n    assert augpath('foo.tar.gz', ext='.zip', multidot=False) != 'foo.tar.zip'\n\n\ndef test_shrinkuser():\n    home = expanduser('~')\n    assert shrinkuser(home) == '~'\n    assert shrinkuser(home + '/projects') == join('~', 'projects')\n    # a sibling path that merely starts with the home string is not shrunk\n    assert shrinkuser(home + 'extra') == normpath(home + 'extra')\n    assert shrinkuser(home + '/a//b/../c') == join('~', 'a', 'c')\n    assert shrinkuser(home + '/projects', home='$HOME') == join('$HOME', 'projects')\n    assert shrinkuser(home, home='$HOME') == '$HOME'\n    assert shrinkuser('/etc/passwd') == normpath('/etc/passwd')\n\n\ndef test_expandpath(monkeypatch):\n    assert expandpath('~') == expanduser('~')\n    monkeypatch.setenv('BOLTONS_TEST_VAR', 'eggs')\n    assert expandpath('$BOLTONS_TEST_VAR') == 'eggs'\n    assert expandpath('~/$BOLTONS_TEST_VAR') == expanduser('~/eggs')\n    monkeypatch.delenv('BOLTONS_UNDEFINED_VAR', raising=False)\n    assert expandpath('$BOLTONS_UNDEFINED_VAR') == '$BOLTONS_UNDEFINED_VAR'\n    assert expandpath('foo') == 'foo'\n"
+ },
+ "reruns": {
+  "tests/test_pathutils.py::test_augpath_multidot": [
+   {
+    "passed": false,
+    "seconds": 0.298,
+    "tail": "    assert augpath('foo.tar.gz', ext='.zip', multidot=False) != 'foo.tar.zip'\nE   AssertionError: assert 'foo.tar.zip' != 'foo.tar.zip'\nE    +  where 'foo.tar.zip' = augpath('foo.tar.gz', ext='.zip', multidot=False)\n=========================== short test summary info ============================\nFAILED tests/test_pathutils.py::test_augpath_multidot - AssertionError: asser...\n1 failed in 0.03s"
+   },
+   {
+    "passed": false,
+    "seconds": 0.363,
+    "tail": "    assert augpath('foo.tar.gz', ext='.zip', multidot=False) != 'foo.tar.zip'\nE   AssertionError: assert 'foo.tar.zip' != 'foo.tar.zip'\nE    +  where 'foo.tar.zip' = augpath('foo.tar.gz', ext='.zip', multidot=False)\n=========================== short test summary info ============================\nFAILED tests/test_pathutils.py::test_augpath_multidot - AssertionError: asser...\n1 failed in 0.03s"
+   },
+   {
+    "passed": false,
+    "seconds": 0.301,
+    "tail": "    assert augpath('foo.tar.gz', ext='.zip', multidot=False) != 'foo.tar.zip'\nE   AssertionError: assert 'foo.tar.zip' != 'foo.tar.zip'\nE    +  where 'foo.tar.zip' = augpath('foo.tar.gz', ext='.zip', multidot=False)\n=========================== short test summary info ============================\nFAILED tests/test_pathutils.py::test_augpath_multidot - AssertionError: asser...\n1 failed in 0.03s"
+   }
+  ]
+ }
+}

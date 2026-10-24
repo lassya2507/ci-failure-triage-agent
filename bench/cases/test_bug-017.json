@@ -1,0 +1,41 @@
+{
+ "id": "test_bug-017",
+ "split": "dev",
+ "truth": {
+  "category": "test_bug",
+  "culprit_file": "tests/test_fileutils.py",
+  "culprit_function": "test_fileperms"
+ },
+ "meta": {
+  "op": "expected_str",
+  "line_before": "assert up.user == 'rwx'",
+  "line_after": "assert up.user == 'rwxs'",
+  "n_noise": 0,
+  "n_failing": 1,
+  "suite_seconds": 2.82
+ },
+ "diff": "diff --git a/tests/test_fileutils.py b/tests/test_fileutils.py\n--- a/tests/test_fileutils.py\n+++ b/tests/test_fileutils.py\n@@ -23,7 +23,7 @@\n         pass\n \n     assert repr(up) == \"FilePerms(user='rwx', group='rwx', other='')\"\n-    assert up.user == 'rwx'\n+    assert up.user == 'rwxs'\n     assert oct(int(up)) == '0o770'\n \n     assert int(FilePerms()) == 0\n",
+ "log": "...............................................................F........ [ 13%]\n...................................................................... [ 27%]\n.............................................................. [ 38%]\n........................................................................ [ 52%]\n........................................................................ [ 66%]\n........................................................................ [ 80%]\n........................................................................ [ 93%]\n.................................                                        [100%]\n=================================== FAILURES ===================================\n________________________________ test_fileperms ________________________________\ntests/test_fileutils.py:26: in test_fileperms\n    assert up.user == 'rwxs'\nE   AssertionError: assert 'rwx' == 'rwxs'\nE     \nE     - rwxs\nE     ?    -\nE     + rwx\n=========================== short test summary info ============================\nFAILED tests/test_fileutils.py::test_fileperms - AssertionError: assert 'rwx'...\n1 failed, 524 passed, 12 subtests passed in 2.49s\n",
+ "files": {
+  "tests/test_fileutils.py": "import os.path\nimport pathlib\n\n\n\nfrom boltons import fileutils\nfrom boltons.fileutils import FilePerms, iter_find_files\nfrom boltons.strutils import removeprefix\n\n\nBOLTONS_PATH = os.path.dirname(os.path.abspath(fileutils.__file__))\n\n\ndef test_fileperms():\n    up = FilePerms()\n    up.other = ''\n    up.user = 'xrw'\n    up.group = 'rrrwx'\n    try:\n        up.other = 'nope'\n    except ValueError:\n        # correctly raised ValueError on invalid chars\n        pass\n\n    assert repr(up) == \"FilePerms(user='rwx', group='rwx', other='')\"\n    assert up.user == 'rwxs'\n    assert oct(int(up)) == '0o770'\n\n    assert int(FilePerms()) == 0\n\n\ndef test_atomicsaver_pathlike(tmp_path):\n    dest = tmp_path / 'output.bin'\n    with fileutils.AtomicSaver(dest) as f:\n        f.write(b'pathlike works')\n    assert dest.read_bytes() == b'pathlike works'\n\n\ndef test_iter_find_files_pathlike():\n    boltons_path = pathlib.Path(BOLTONS_PATH)\n    results = list(iter_find_files(boltons_path, patterns=['*.py']))\n    basenames = [os.path.basename(p) for p in results]\n    assert 'fileutils.py' in basenames\n\n\ndef test_iter_find_files():\n    def _to_baseless_list(paths):\n        return [removeprefix(p, BOLTONS_PATH).lstrip(os.path.sep) for p in paths]\n\n    assert 'fileutils.py' in _to_baseless_list(iter_find_files(BOLTONS_PATH, patterns=['*.py']))\n\n    boltons_parent = os.path.dirname(BOLTONS_PATH)\n    assert 'fileutils.py' in _to_baseless_list(iter_find_files(boltons_parent, patterns=['*.py']))\n    assert 'fileutils.py' not in _to_baseless_list(iter_find_files(boltons_parent, patterns=['*.py'], max_depth=0))\n\n\ndef test_rotate_file_no_rotation(tmp_path):\n    file_path = tmp_path / 'test_file.txt'\n    fileutils.rotate_file(file_path)\n    assert not file_path.exists()\n\n\ndef test_rotate_file_one_rotation(tmp_path):\n    file_path = tmp_path / 'test_file.txt'\n    file_path.write_text('test content')\n    assert file_path.exists()\n\n    fileutils.rotate_file(file_path)\n    assert not file_path.exists()\n    assert (tmp_path / 'test_file.1.txt').exists()\n\n\ndef test_rotate_file_full_rotation(tmp_path):\n    file_path = tmp_path / 'test_file.txt'\n    file_path.write_text('test content 0')\n    for i in range(1, 5):\n        cur_path = tmp_path / f'test_file.{i}.txt'\n        cur_path.write_text(f'test content {i}')\n        assert cur_path.exists()\n\n    fileutils.rotate_file(file_path, keep=5)\n    assert not file_path.exists()\n\n    for i in range(1, 5):\n        cur_path = tmp_path / f'test_file.{i}.txt'\n        assert cur_path.read_text() == f'test content {i-1}'\n\n    assert not (tmp_path / 'test_file.5.txt').exists()\n\ndef test_rotate_file_full_rotation_no_ext(tmp_path):\n    file_path = tmp_path / 'test_file'\n    file_path.write_text('test content 0')\n    for i in range(1, 5):\n        cur_path = tmp_path / f'test_file.{i}'\n        cur_path.write_text(f'test content {i}')\n        assert cur_path.exists()\n\n    fileutils.rotate_file(file_path, keep=5)\n    assert not file_path.exists()\n\n    for i in range(1, 5):\n        cur_path = tmp_path / f'test_file.{i}'\n        assert cur_path.read_text() == f'test content {i-1}'\n\n    assert not (tmp_path / 'test_file.5').exists()\n\n"
+ },
+ "reruns": {
+  "tests/test_fileutils.py::test_fileperms": [
+   {
+    "passed": false,
+    "seconds": 0.335,
+    "tail": "E     - rwxs\nE     ?    -\nE     + rwx\n=========================== short test summary info ============================\nFAILED tests/test_fileutils.py::test_fileperms - AssertionError: assert 'rwx'...\n1 failed in 0.04s"
+   },
+   {
+    "passed": false,
+    "seconds": 0.351,
+    "tail": "E     - rwxs\nE     ?    -\nE     + rwx\n=========================== short test summary info ============================\nFAILED tests/test_fileutils.py::test_fileperms - AssertionError: assert 'rwx'...\n1 failed in 0.04s"
+   },
+   {
+    "passed": false,
+    "seconds": 0.352,
+    "tail": "E     - rwxs\nE     ?    -\nE     + rwx\n=========================== short test summary info ============================\nFAILED tests/test_fileutils.py::test_fileperms - AssertionError: assert 'rwx'...\n1 failed in 0.04s"
+   }
+  ]
+ }
+}

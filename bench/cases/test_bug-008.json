@@ -1,0 +1,41 @@
+{
+ "id": "test_bug-008",
+ "split": "test",
+ "truth": {
+  "category": "test_bug",
+  "culprit_file": "tests/test_ecoutils.py",
+  "culprit_function": "test_scrub"
+ },
+ "meta": {
+  "op": "expected_str",
+  "line_before": "assert prof['uname']['node'] == '-'",
+  "line_after": "assert prof['uname']['node'] == '-s'",
+  "n_noise": 0,
+  "n_failing": 1,
+  "suite_seconds": 2.93
+ },
+ "diff": "diff --git a/tests/test_ecoutils.py b/tests/test_ecoutils.py\n--- a/tests/test_ecoutils.py\n+++ b/tests/test_ecoutils.py\n@@ -19,7 +19,7 @@\n     assert prof['hostname'] == '-'\n     assert prof['hostfqdn'] == '-'\n     assert prof['cwd'] == '-'\n-    assert prof['uname']['node'] == '-'\n+    assert prof['uname']['node'] == '-s'\n     assert prof['python']['bin'] == '-'\n     assert prof['python']['argv'] == '-'\n \n",
+ "log": "............................................................F........... [ 13%]\n...................................................................... [ 27%]\n.............................................................. [ 38%]\n........................................................................ [ 52%]\n........................................................................ [ 66%]\n........................................................................ [ 80%]\n........................................................................ [ 93%]\n.................................                                        [100%]\n=================================== FAILURES ===================================\n__________________________________ test_scrub __________________________________\ntests/test_ecoutils.py:22: in test_scrub\n    assert prof['uname']['node'] == '-s'\nE   AssertionError: assert '-' == '-s'\nE     \nE     - -s\nE     + -\n=========================== short test summary info ============================\nFAILED tests/test_ecoutils.py::test_scrub - AssertionError: assert '-' == '-s'\n1 failed, 524 passed, 12 subtests passed in 2.62s\n",
+ "files": {
+  "tests/test_ecoutils.py": "import os\nimport socket\nimport sys\n\nfrom boltons import ecoutils\n\n\ndef test_basic():\n    # basic sanity test\n    prof = ecoutils.get_profile()\n\n    assert prof['python']['bin'] == sys.executable\n\n\ndef test_scrub():\n    prof = ecoutils.get_profile(scrub=True)\n\n    assert prof['username'] == '-'\n    assert prof['hostname'] == '-'\n    assert prof['hostfqdn'] == '-'\n    assert prof['cwd'] == '-'\n    assert prof['uname']['node'] == '-s'\n    assert prof['python']['bin'] == '-'\n    assert prof['python']['argv'] == '-'\n\n\ndef test_scrub_does_not_resolve_the_host(monkeypatch):\n    def unreachable(*args):\n        raise AssertionError('scrubbed profile resolved the host name')\n\n    monkeypatch.setattr(socket, 'gethostname', unreachable)\n    monkeypatch.setattr(socket, 'getfqdn', unreachable)\n\n    prof = ecoutils.get_profile(scrub=True)\n\n    assert prof['hostname'] == '-'\n    assert prof['hostfqdn'] == '-'\n\n\ndef test_scrub_does_not_read_the_cwd(monkeypatch):\n    calls = []\n    real_getcwd = os.getcwd\n\n    def recording_getcwd():\n        calls.append('getcwd')\n        return real_getcwd()\n\n    monkeypatch.setattr(os, 'getcwd', recording_getcwd)\n\n    prof = ecoutils.get_profile(scrub=True)\n\n    assert calls == []\n\n    assert prof['cwd'] == '-'\n"
+ },
+ "reruns": {
+  "tests/test_ecoutils.py::test_scrub": [
+   {
+    "passed": false,
+    "seconds": 0.32,
+    "tail": "E     \nE     - -s\nE     + -\n=========================== short test summary info ============================\nFAILED tests/test_ecoutils.py::test_scrub - AssertionError: assert '-' == '-s'\n1 failed in 0.03s"
+   },
+   {
+    "passed": false,
+    "seconds": 0.33,
+    "tail": "E     \nE     - -s\nE     + -\n=========================== short test summary info ============================\nFAILED tests/test_ecoutils.py::test_scrub - AssertionError: assert '-' == '-s'\n1 failed in 0.03s"
+   },
+   {
+    "passed": false,
+    "seconds": 0.335,
+    "tail": "E     \nE     - -s\nE     + -\n=========================== short test summary info ============================\nFAILED tests/test_ecoutils.py::test_scrub - AssertionError: assert '-' == '-s'\n1 failed in 0.04s"
+   }
+  ]
+ }
+}

@@ -1,0 +1,41 @@
+{
+ "id": "test_bug-005",
+ "split": "test",
+ "truth": {
+  "category": "test_bug",
+  "culprit_file": "tests/test_jsonutils.py",
+  "culprit_function": "test_reverse_iter_lines_keeps_text_stream_attached"
+ },
+ "meta": {
+  "op": "expected_str",
+  "line_before": "assert stream.read() == 'first\\nsecond'",
+  "line_after": "assert stream.read() == 'first\\nseconds'",
+  "n_noise": 0,
+  "n_failing": 1,
+  "suite_seconds": 2.91
+ },
+ "diff": "diff --git a/tests/test_jsonutils.py b/tests/test_jsonutils.py\n--- a/tests/test_jsonutils.py\n+++ b/tests/test_jsonutils.py\n@@ -119,4 +119,4 @@\n     with path.open() as stream:\n         assert list(reverse_iter_lines(stream)) == ['second', 'first']\n         stream.seek(0)\n-        assert stream.read() == 'first\\nsecond'\n+        assert stream.read() == 'first\\nseconds'\n",
+ "log": "........................................................................ [ 13%]\n...................................................................... [ 27%]\n.............................................................. [ 38%]\n..............................................................F......... [ 52%]\n........................................................................ [ 66%]\n........................................................................ [ 80%]\n........................................................................ [ 93%]\n.................................                                        [100%]\n=================================== FAILURES ===================================\n______________ test_reverse_iter_lines_keeps_text_stream_attached ______________\ntests/test_jsonutils.py:122: in test_reverse_iter_lines_keeps_text_stream_attached\n    assert stream.read() == 'first\\nseconds'\nE   AssertionError: assert 'first\\nsecond' == 'first\\nseconds'\nE     \nE       first\nE     - seconds\nE     ?       -\nE     + second\n=========================== short test summary info ============================\nFAILED tests/test_jsonutils.py::test_reverse_iter_lines_keeps_text_stream_attached\n1 failed, 524 passed, 12 subtests passed in 2.60s\n",
+ "files": {
+  "tests/test_jsonutils.py": "import os\n\nfrom boltons.jsonutils import (JSONLIterator,\n                               DEFAULT_BLOCKSIZE,\n                               reverse_iter_lines)\n\nCUR_PATH = os.path.dirname(os.path.abspath(__file__))\nNEWLINES_DATA_PATH = CUR_PATH + '/newlines_test_data.txt'\nJSONL_DATA_PATH = CUR_PATH + '/jsonl_test_data.txt'\n\n\ndef _test_reverse_iter_lines(filename, blocksize=DEFAULT_BLOCKSIZE):\n    fo = open(filename)\n    reference = fo.read()\n    fo.seek(0, os.SEEK_SET)\n    rev_lines = list(reverse_iter_lines(fo, blocksize))\n    assert '\\n'.join(rev_lines[::-1]) == reference\n\n\ndef _test_reverse_iter_lines_bytes(filename, blocksize=DEFAULT_BLOCKSIZE):\n    fo = open(filename, 'rb')\n    reference = fo.read()\n    fo.seek(0, os.SEEK_SET)\n    rev_lines = list(reverse_iter_lines(fo, blocksize))\n    assert os.linesep.encode('ascii').join(rev_lines[::-1]) == reference\n\n\n\ndef test_reverse_iter_lines():\n    for blocksize in (2, 4, 16, 4096):\n        _test_reverse_iter_lines(NEWLINES_DATA_PATH, blocksize)\n        _test_reverse_iter_lines_bytes(NEWLINES_DATA_PATH, blocksize)\n\n\ndef test_jsonl_iterator():\n    ref = [{'4': 4}, {'3': 3}, {'2': 2}, {'1': 1}, {}]\n    jsonl_iter = JSONLIterator(open(JSONL_DATA_PATH), reverse=True)\n    jsonl_list = list(jsonl_iter)\n    assert jsonl_list == ref\n\n\nclass _CappedReadFile:\n    \"\"\"Wraps a file object, raising if read() is called more than\n    max_reads times, so a non-terminating read loop fails fast\n    instead of hanging the test suite.\"\"\"\n    def __init__(self, fo, max_reads=100):\n        self._fo = fo\n        self._reads = 0\n        self._max_reads = max_reads\n\n    def read(self, size=-1):\n        self._reads += 1\n        if self._reads > self._max_reads:\n            raise RuntimeError('read() called more than %s times,'\n                               ' likely an infinite loop' % self._max_reads)\n        return self._fo.read(size)\n\n    def __iter__(self):\n        return iter(self._fo)\n\n    def __getattr__(self, name):\n        return getattr(self._fo, name)\n\n\ndef test_jsonl_iterator_mid_last_line_seek_terminates(tmp_path):\n    # a rel_seek landing mid-final-line of a file with no trailing\n    # newline used to loop forever in _align_to_newline\n    path = tmp_path / 'no_trailing_newline.jsonl'\n    path.write_text('{\"1\": 1}\\n{\"2\": 2}')\n    fo = _CappedReadFile(open(str(path)))\n    jsonl_iter = JSONLIterator(fo, rel_seek=0.9)\n    assert list(jsonl_iter) == []\n\n\ndef test_jsonl_iterator_rel_seek_negative():\n    # negative rel_seek used to normalize to >1.0, seeking past EOF\n    # and looping forever in _align_to_newline\n    ref = list(JSONLIterator(open(JSONL_DATA_PATH)))\n    fo = _CappedReadFile(open(JSONL_DATA_PATH))\n    tail = list(JSONLIterator(fo, rel_seek=-0.5))\n    assert tail\n    assert tail == list(JSONLIterator(open(JSONL_DATA_PATH), rel_seek=0.5))\n    assert tail == ref[len(ref) - len(tail):]\n\n\ndef test_jsonl_explicit_end_seek(tmp_path):\n    path = tmp_path / 'records.jsonl'\n    path.write_text('{\"n\": 1}\\n{\"n\": 2}\\n')\n    with path.open('rb', buffering=0) as stream:\n        assert list(JSONLIterator(stream, reverse=True, rel_seek=1.0)) == [{'n': 2}, {'n': 1}]\n    with path.open() as stream:\n        assert list(JSONLIterator(stream, rel_seek=1.0)) == []\n\n\ndef test_jsonl_relative_seek_binary_matches_text(tmp_path):\n    path = tmp_path / 'records.jsonl'\n    path.write_bytes(b'{\"n\": 1}\\n{\"n\": 2}\\n{\"n\": 3}\\n')\n    with path.open('rb') as binary, path.open() as text:\n        assert list(JSONLIterator(binary, rel_seek=0.4)) == list(JSONLIterator(text, rel_seek=0.4))\n\n\ndef test_reverse_iter_lines_uses_file_encoding(tmp_path):\n    path = tmp_path / 'latin1.txt'\n    path.write_bytes('caf\u00e9\\nfin'.encode('latin-1'))\n    with path.open(encoding='latin-1') as stream:\n        assert list(reverse_iter_lines(stream)) == ['fin', 'caf\u00e9']\n\n\ndef test_reverse_iter_lines_uses_explicit_binary_encoding():\n    from io import BytesIO\n\n    stream = BytesIO('caf\u00e9\\nfin'.encode('latin-1'))\n    assert list(reverse_iter_lines(stream, encoding='latin-1')) == ['fin', 'caf\u00e9']\n\n\ndef test_reverse_iter_lines_keeps_text_stream_attached(tmp_path):\n    path = tmp_path / 'lines.txt'\n    path.write_text('first\\nsecond')\n    with path.open() as stream:\n        assert list(reverse_iter_lines(stream)) == ['second', 'first']\n        stream.seek(0)\n        assert stream.read() == 'first\\nseconds'\n"
+ },
+ "reruns": {
+  "tests/test_jsonutils.py::test_reverse_iter_lines_keeps_text_stream_attached": [
+   {
+    "passed": false,
+    "seconds": 0.362,
+    "tail": "E     - seconds\nE     ?       -\nE     + second\n=========================== short test summary info ============================\nFAILED tests/test_jsonutils.py::test_reverse_iter_lines_keeps_text_stream_attached\n1 failed in 0.06s"
+   },
+   {
+    "passed": false,
+    "seconds": 0.363,
+    "tail": "E     - seconds\nE     ?       -\nE     + second\n=========================== short test summary info ============================\nFAILED tests/test_jsonutils.py::test_reverse_iter_lines_keeps_text_stream_attached\n1 failed in 0.04s"
+   },
+   {
+    "passed": false,
+    "seconds": 0.31,
+    "tail": "E     - seconds\nE     ?       -\nE     + second\n=========================== short test summary info ============================\nFAILED tests/test_jsonutils.py::test_reverse_iter_lines_keeps_text_stream_attached\n1 failed in 0.03s"
+   }
+  ]
+ }
+}
