@@ -122,6 +122,8 @@ def main():
     ap.add_argument("--split", default="test")
     ap.add_argument("--cases", default="bench/cases")
     ap.add_argument("--results", default="results")
+    ap.add_argument("--all-cases", action="store_true",
+                    help="score every case even if some systems have not run on all of them")
     args = ap.parse_args()
 
     cases = load_cases(args.cases, args.split)
@@ -136,6 +138,13 @@ def main():
         if "rules" in systems:
             systems[f"hybrid_low({name[6:]})"] = hybrid(systems["rules"], systems[name], {"low"})
             systems[f"hybrid_med({name[6:]})"] = hybrid(systems["rules"], systems[name], {"low", "medium"})
+
+    if not args.all_cases:
+        # compare systems only on the cases that every system has finished
+        common = set.intersection(*(set(rows) for rows in systems.values())) if systems else set()
+        if len(common) < len(cases):
+            print(f"note: scoring the {len(common)} of {len(cases)} cases that every system has run")
+        cases = [c for c in cases if c.id in common]
 
     lines = [f"# Results ({args.split} split, {len(cases)} cases)", "",
              "Truth mix: " + ", ".join(f"{k}={v}" for k, v in Counter(c.truth['category'] for c in cases).items()), ""]
