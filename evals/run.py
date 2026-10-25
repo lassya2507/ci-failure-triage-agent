@@ -14,7 +14,7 @@ from pathlib import Path
 
 from triage.agent import run_agent
 from triage.case import RepoView, load_cases
-from triage.llm import QuotaExhausted, cost_usd
+from triage.llm import FatalAPIError, QuotaExhausted, cost_usd
 from triage.rules import triage_rules
 from triage.tools import Tools
 from triage.tracing import Tracer
@@ -85,7 +85,11 @@ def main():
 
     done = set()
     if out_path.exists():
-        done = {json.loads(l)["id"] for l in out_path.read_text().splitlines() if l.strip()}
+        # keep finished cases; drop ones that only fell back because the API call failed
+        rows = [json.loads(l) for l in out_path.read_text().splitlines() if l.strip()]
+        keep = [r for r in rows if not str(r.get("fallback_reason", "")).startswith("api_error")]
+        out_path.write_text("".join(json.dumps(r) + "\n" for r in keep))
+        done = {r["id"] for r in keep}
     todo = [c for c in cases if c.id not in done]
     print(f"{name}: {len(todo)} cases to run ({len(done)} already done)", flush=True)
 
@@ -96,6 +100,9 @@ def main():
         except QuotaExhausted as e:
             print(f"\nDaily quota reached after {i - 1} cases. Run the same command later to resume.\n{e}")
             break
+        except FatalAPIError as e:
+            print(f"\nStopped: the Gemini API rejected the request, so no agent results were recorded.\n{e}")
+            raise SystemExit(1)
         with out_path.open("a") as fh:
             fh.write(json.dumps(row) + "\n")
         r = row["report"]

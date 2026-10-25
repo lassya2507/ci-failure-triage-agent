@@ -24,6 +24,11 @@ class QuotaExhausted(Exception):
     """Daily free-tier quota is used up. The eval run stops and can resume later."""
 
 
+class FatalAPIError(Exception):
+    """Bad key, billing problem, or unknown model. Retrying or falling back would only
+    hide it, so the eval run stops."""
+
+
 # Paid-tier list prices, USD per 1M tokens, from ai.google.dev/gemini-api/docs/pricing
 # (checked 2026-10-24). The free tier costs $0; these let us report what a run *would* cost.
 PRICES = {
@@ -77,6 +82,8 @@ class GeminiBackend:
                 msg = str(e)
                 if e.code == 429 and ("PerDay" in msg or "per day" in msg.lower()):
                     raise QuotaExhausted(msg[:300])
+                if e.code in (400, 401, 402, 403, 404):
+                    raise FatalAPIError(f"{e.code}: {msg[:400]}")
                 if e.code in (429, 500, 502, 503, 504) and attempt < 5:
                     time.sleep(delay)
                     self.waited += delay

@@ -53,7 +53,7 @@ def run_agent(tools: Tools, backend, max_steps: int = 10, max_invalid: int = 2) 
         try:
             turn = session.step(tool_results=pending, force_submit=force, nudge=nudge)
         except Exception as e:  # API failure after retries
-            if type(e).__name__ == "QuotaExhausted":
+            if type(e).__name__ in ("QuotaExhausted", "FatalAPIError"):
                 raise
             return fallback(f"api_error: {type(e).__name__}: {str(e)[:200]}")
         pending, nudge = None, None

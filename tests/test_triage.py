@@ -114,3 +114,20 @@ def test_rerun_budget(tmp_path):
     tools = make_tools(tmp_path)
     assert "FAILED" in tools.call("rerun_test", test_id="tests/test_m.py::test_help")
     assert tools.call("rerun_test", test_id="tests/test_m.py::test_help").startswith("error")
+
+
+def test_billing_error_stops_instead_of_falling_back(tmp_path):
+    import pytest
+    from triage.llm import FatalAPIError
+
+    class Broken:
+        model = "fake"
+
+        def start(self, *a):
+            return self
+
+        def step(self, **kw):
+            raise FatalAPIError("402: credits depleted")
+
+    with pytest.raises(FatalAPIError):
+        run_agent(make_tools(tmp_path), Broken())
