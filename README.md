@@ -1,157 +1,118 @@
-# CI failure triage: hand-written rules vs an LLM agent
+# CI failure triage: rules vs an LLM agent
 
-When a CI job goes red, someone has to work out why before anyone can act on it.
-Did this change break the library? Did it break a test? Did a flaky test fail?
-Or is the CI machine itself broken? I wanted to measure, on cases where I actually
-know the right answer, when an LLM agent is worth it for this job and when plain
-rules are good enough.
+When a CI run fails, the first question is why. The change broke the code, the
+change broke a test, a flaky test failed, or the CI machine itself is broken. I
+wanted to see when an LLM agent actually helps with this, and when a few
+hand-written rules are enough.
 
-So this repo has three systems answering the same question on the same benchmark:
+I compared three approaches on the same 120 failures, where I know the right answer
+for each one:
 
-- **rules**: the checks a CI engineer would write by hand. No LLM.
-- **agent**: a Gemini model with tools (read the log, read the diff, open files,
-  rerun a failing test) that has to submit a structured report.
-- **hybrid**: run the rules first, and only call the agent when the rules say
-  they are not confident.
+- **rules**: plain Python checks, no LLM
+- **agent**: Gemini with tools to read the log, the diff and files, and to rerun a
+  failing test. It has to return a report in a fixed JSON format.
+- **hybrid**: run the rules first and only ask the agent when the rules are not sure
 
 ## Results
 
-Test split, Gemini 3.1 Flash-Lite, one run. The agent finished 74 of the 100 test
-cases before I hit the free-tier daily quota, so every number below is on those
-same 74 cases for all three systems (44 regressions, 16 flaky, 14 infra). The
-other 26 (20 test bugs, 6 regressions) are still to run.
+Gemini 3.1 Flash-Lite, one run. I hit the free-tier daily limit after 74 of the
+100 test cases, so all three are compared on those same 74 (44 regressions,
+16 flaky, 14 infra). The other 26 are still to run.
 
 | | rules | agent | hybrid |
 |---|---|---|---|
-| fully correct (category, plus the right file and function when the change is at fault) | 64/74 (86.5%) | 73/74 (98.6%) | 73/74 (98.6%) |
-| right category | 95.9% | 98.6% | 98.6% |
-| right culprit function (regressions) | 37/44 | 44/44 | 44/44 |
-| cases sent to the LLM | 0% | 100% | 32.4% |
-| LLM calls per case | 0 | 6.46 | 2.36 |
+| fully correct | 64/74 | 73/74 | 73/74 |
+| right function for regressions | 37/44 | 44/44 | 44/44 |
+| cases sent to the LLM | 0% | 100% | 32% |
+| LLM calls per case | 0 | 6.5 | 2.4 |
 | median latency | 0.17 s | 17.4 s | 0.17 s |
-| p95 latency | 0.8 s | 62.9 s | 56.8 s |
-| cost per case (paid-tier list price) | $0 | $0.0039 | $0.0015 |
-| test reruns per case | 0.88 | 0.18 | 0.92 |
+| cost per case | $0 | $0.0039 | $0.0015 |
 
-Latency here is my code plus time inside LLM calls plus recorded rerun time. It
-leaves out the 37 minutes the run spent waiting on free-tier rate limits.
+"Fully correct" means the right category, plus the right file and function when
+the change is at fault. Cost is based on Google's paid-tier prices (the run itself
+was on the free tier). Latency leaves out time spent waiting on rate limits. More
+detail is in `results/summary_test.md`.
 
-The full tables (per category, confusion matrices) are in `results/summary_test.md`.
+## What I found
 
-## What I learned
+The rules did better than I expected, and they were honest about when they were
+guessing. Every time they said high or medium confidence they were right (50/50).
+All 10 of their mistakes were in the 24 cases they marked low confidence. So the
+hybrid only sends those 24 to the agent and ends up with the same score as running
+the agent on everything, with about 63% fewer LLM calls.
 
-**The rules are better than I expected, and they know when they are guessing.**
-Whenever the rules said high or medium confidence, they were right: 50 out of 50.
-All 10 of their mistakes came from the 24 cases they marked low confidence. That
-is what makes the hybrid work. It sends only those 24 cases to the agent, gets
-the same 73/74 as running the agent on everything, and makes about 63% fewer LLM
-calls.
+Where the agent really helped was regressions where the traceback doesn't touch
+the changed line. The function just returns a wrong value and an assertion fails
+somewhere else. That was 28 of the 44 regressions. The rules got 21 of those, the
+agent got all 28. When the traceback does point at the changed line, both got all
+16.
 
-**The agent earns its cost on one specific kind of failure.** In 28 of the 44
-regressions, the traceback never touches the line that was changed. The function
-just returns a wrong value and some assertion further away fails. The rules have no
-traceback link to follow there and often end up guessing by name; they got 21/28.
-The agent read the failing test and the changed functions and got 28/28. When the traceback does point at the
-changed line, both get 16/16, and the agent is just a slower, more expensive way
-to get the same answer.
+The agent's one miss was interesting. On flaky-012 it found the real problem, an
+unseeded `random.sample` in the test, and tried to blame the test file. My
+validation only accepts files that are in the diff, so it rejected that. On the
+retry the model blamed the only changed file just to pass the check, and said so
+in its notes. My check pushed it from almost right to wrong. Next time I would
+change the error message to suggest flaky or infra when the cause is outside the
+diff.
 
-**A strict output check can push the model into a wrong answer.** The agent's one
-miss (flaky-012) is the most interesting case in the run. It found the real cause,
-an unseeded `random.sample` in the test, and wanted to blame the test file. My
-grounding check only accepts culprits that are in the diff, and that test file was
-not. So the check rejected the report, and on the retry the model blamed the only
-changed library function instead, with a note saying the check forced it. That
-flaky test also failed all three of its recorded reruns, which is why the rules
-got it wrong too. Next time I would make the rejection message say "if the cause
-is outside the diff, the category is probably flaky or infra" rather than just
-"pick a file from the diff".
+One more thing I learned the hard way: my first run looked like the agent scored
+exactly the same as the rules. It turned out every Gemini call had failed on a
+billing error and the code quietly fell back to the rules 100 times. Now a key or
+billing error stops the run instead.
 
-**Silent fallbacks hide outages.** My first Colab run "finished" with the agent
-scoring exactly like the rules. Every Gemini call had failed on a billing error,
-and the agent fell back to the rules 100 times without stopping. The fallback rate
-column (100%) and LLM calls per case (0) are what gave it away. Now a key or
-billing error stops the run, and a resumed run redoes those cases.
+## How the test cases were made
 
-## How the benchmark works
+I used a real library, [boltons](https://github.com/mahmoud/boltons), pinned to
+one commit, and ran its real test suite after breaking things on purpose:
 
-The hard part of evaluating triage is ground truth. Real CI failures are rarely
-labeled. So I made the failures myself, on a real library with a real test suite
-([boltons](https://github.com/mahmoud/boltons), pinned to one commit), and every
-case is an actual pytest run:
+- **regression**: a tiny bug in a library function (like `<` to `<=`, `and` to `or`,
+  or an off-by-one), mixed in with up to three harmless edits elsewhere so the diff
+  looks like a normal commit
+- **test_bug**: a wrong expected value or input in a test
+- **flaky**: a test that depends on random order already exists in the repo, and
+  the diff is harmless. I ran CI until it failed and saved three real reruns.
+- **infra**: the CI environment is broken (missing module, open-file limit,
+  permission errors on the temp folder), and the diff is harmless
 
-- **regression**: a one-token bug in a library function (flipped comparison,
-  `and`/`or` swap, off-by-one, dropped `not`, ...), mixed into a diff with up to
-  three behavior-preserving edits in other functions, so the diff looks like a
-  normal commit and not just the broken line. I kept only bugs that some test
-  actually catches, and checked that the extra edits alone pass the full suite.
-- **test_bug**: a wrong expected value, wrong input, or flipped assertion in a
-  test, plus unrelated edits.
-- **flaky**: a test that depends on set ordering or unseeded randomness is already
-  in the repo; the diff is harmless. I sampled CI runs until it failed, then
-  recorded three real reruns of it.
-- **infra**: the runner is broken (missing native module, open-file limit,
-  temp-dir permission errors) through an environment hook outside the repo; the
-  diff is harmless.
+Since I made each failure myself, I know the right answer. There are 20 dev cases
+I used for smoke tests and 100 test cases. I wrote the rules before building the
+cases and didn't change the rules or the prompt after seeing test results.
 
-Since I injected each fault, I know the right category, and for regressions and
-test bugs the exact function. 120 cases total: 20 dev (for smoke tests) and 100 test.
-I wrote the rules before building the benchmark. Reruns are replayed from the recorded ones,
-so every system sees the same rerun outcomes.
+## How it works
 
-## The systems
+`triage/rules.py` goes through a fixed list of checks: known environment errors,
+a traceback line inside the change, a traceback through a changed function, an
+edited test, a rerun that passes. If none match, it guesses by name and marks
+that as low confidence.
 
-`triage/rules.py` checks, in order: known environment-error signatures, a
-traceback frame on a changed line, a frame inside a changed function, an edited
-failing test, a rerun that passes, and finally a guess by name overlap (that last
-step is the low-confidence one).
+`triage/agent.py` is the agent loop. The model calls a tool every turn and ends
+with `submit_report`. I check the report against the JSON schema and against the
+diff. If it fails, the model gets the error and can try again twice. If it still
+fails, the rules answer is used. Every step is saved to `results/traces/`, which
+is how I figured out what happened on flaky-012.
 
-`triage/agent.py` is the tool loop. The model has to call a tool on every turn
-and finish with `submit_report`. The report is validated with pydantic and then
-checked against the diff (the blamed file and function must actually be changed).
-On a rejection it gets the error back and can retry twice. If it runs out of
-steps or keeps failing, the rules answer is used instead and the case is marked
-as a fallback. Every LLM call and tool call goes to a JSONL trace
-(`results/traces/`), which is how I debugged flaky-012.
-
-Both systems use the same `Tools` class, so neither one can see anything the
-other cannot.
+Both use the same tools, so neither sees anything the other can't.
 
 ## Limitations
 
-- The faults are synthetic and come from one library. Real regressions are often
-  bigger than one token, and real flaky tests are messier.
-- The infra cases only cover three kinds of breakage, so they are easy for both.
-- One model, one run. The agent is not deterministic, and I have not measured
-  run-to-run variance yet.
-- I wrote both the rules and the prompt, so neither is tuned as hard as it could
-  be. I did not change either after seeing test results.
-- Cost is computed from token counts and Google's paid-tier list price; the run
-  itself used the free tier.
-- 26 test cases are still pending (see Results).
+- The bugs are artificial and all from one library. Real bugs are usually bigger
+  than a one-token change.
+- The infra cases only cover three kinds of breakage, so both systems find them easy.
+- I only ran the agent once, so I don't know how much its results vary between runs.
+- 26 test cases still need to run.
 
-## Run it
+## Running it
 
-Open `run_on_colab.ipynb` in Colab (CPU is fine), add a Gemini key under Secrets
-as `GEMINI_API_KEY`, and run the cells. Or locally:
+Open `run_on_colab.ipynb` in Colab, add your Gemini key under Secrets as
+`GEMINI_API_KEY`, and run the cells. To run locally:
 
 ```
 pip install -r requirements.txt
-python -m bench.fetch                      # clone boltons at the pinned commit
-python -m pytest -q tests                  # offline unit tests (fake model)
+python -m bench.fetch
+python -m pytest -q tests
 python -m evals.run --system rules --split test
-GEMINI_API_KEY=... python -m evals.run --system agent --split test --model gemini-3.1-flash-lite
+GEMINI_API_KEY=... python -m evals.run --system agent --split test
 python -m evals.report --split test
-python -m bench.build --out bench/cases    # rebuild the benchmark (slow: thousands of pytest runs)
 ```
 
-## Layout
-
-```
-bench/     benchmark builder: fault injection, test runner, the 120 cases
-triage/    schema, log and diff parsing, tools, rules, agent, Gemini client
-evals/     run a system over the cases, score it, build the hybrid
-results/   raw per-case results, agent traces, summary tables
-tests/     unit tests, including the agent's retry and fallback paths
-```
-
-The benchmark cases contain modified copies of boltons files (BSD-3-Clause).
+The test cases include modified copies of boltons files (BSD-3-Clause).
