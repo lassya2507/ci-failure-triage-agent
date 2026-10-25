@@ -1,0 +1,22 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-023", "system": "agent"}
+{"t": 7.2625, "kind": "llm", "step": 0, "in_tokens": 915, "out_tokens": 10, "seconds": 1.112, "calls": ["read_log"], "forced": false}
+{"t": 7.2628, "kind": "tool", "name": "read_log", "args": {}, "ms": 0.05, "out_chars": 1645}
+{"t": 16.3896, "kind": "llm", "step": 1, "in_tokens": 1363, "out_tokens": 10, "seconds": 2.739, "calls": ["read_diff"], "forced": false}
+{"t": 16.3897, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 629}
+{"t": 25.3419, "kind": "llm", "step": 2, "in_tokens": 1596, "out_tokens": 12, "seconds": 4.192, "calls": ["get_changed_functions"], "forced": false}
+{"t": 25.3499, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 7.89, "out_chars": 55}
+{"t": 31.7254, "kind": "llm", "step": 3, "in_tokens": 1640, "out_tokens": 38, "seconds": 3.075, "calls": ["read_file"], "forced": false}
+{"t": 31.7257, "kind": "tool", "name": "read_file", "args": {"end_line": 525, "path": "boltons/tableutils.py", "start_line": 510}, "ms": 0.14, "out_chars": 925}
+{"t": 44.3923, "kind": "llm", "step": 4, "in_tokens": 2006, "out_tokens": 19, "seconds": 8.242, "calls": ["search_log"], "forced": false}
+{"t": 44.3926, "kind": "tool", "name": "search_log", "args": {"pattern": "_html_tr"}, "ms": 0.14, "out_chars": 64}
+{"t": 45.3177, "kind": "llm", "step": 5, "in_tokens": 2068, "out_tokens": 38, "seconds": 0.925, "calls": ["read_file"], "forced": false}
+{"t": 45.318, "kind": "tool", "name": "read_file", "args": {"start_line": 100, "end_line": 150, "path": "boltons/tableutils.py"}, "ms": 0.13, "out_chars": 1819}
+{"t": 54.9289, "kind": "llm", "step": 6, "in_tokens": 2814, "out_tokens": 20, "seconds": 3.036, "calls": ["search_log"], "forced": false}
+{"t": 54.9292, "kind": "tool", "name": "search_log", "args": {"pattern": "_html_tr ="}, "ms": 0.16, "out_chars": 10}
+{"t": 60.5492, "kind": "llm", "step": 7, "in_tokens": 2849, "out_tokens": 20, "seconds": 1.156, "calls": ["search_log"], "forced": false}
+{"t": 60.5495, "kind": "tool", "name": "search_log", "args": {"pattern": "_html_tr ="}, "ms": 0.02, "out_chars": 10}
+{"t": 68.4482, "kind": "llm", "step": 8, "in_tokens": 2884, "out_tokens": 21, "seconds": 1.555, "calls": ["search_log"], "forced": false}
+{"t": 68.4485, "kind": "tool", "name": "search_log", "args": {"pattern": "self._html_tr ="}, "ms": 0.11, "out_chars": 10}
+{"t": 77.8577, "kind": "llm", "step": 9, "in_tokens": 2920, "out_tokens": 151, "seconds": 3.464, "calls": ["submit_report"], "forced": true}
+{"t": 77.8579, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/tableutils.py", "culprit_function": "Table._add_horizontal_html_lines", "confidence": "high", "evidence": "The change in `boltons/tableutils.py` replaced a `+` operator with a `-` operator for two strings (`self._html_tr` and `self._html_td`). Attempting to subtract strings in Python raises a `TypeError`, which matches the failure in the test logs.", "suggested_action": "Revert the change in `boltons/tableutils.py` from `-` back to `+`."}}
+{"t": 77.8582, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/tableutils.py", "culprit_function": "Table._add_horizontal_html_lines", "confidence": "high", "evidence": "The change in `boltons/tableutils.py` replaced a `+` operator with a `-` operator for two strings (`self._html_tr` and `self._html_td`). Attempting to subtract strings in Python raises a `TypeError`, which matches the failure in the test logs.", "suggested_action": "Revert the change in `boltons/tableutils.py` from `-` back to `+`."}, "latency_seconds": 29.512}

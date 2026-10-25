@@ -1,0 +1,12 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-033", "system": "agent"}
+{"t": 10.4807, "kind": "llm", "step": 0, "in_tokens": 997, "out_tokens": 10, "seconds": 6.635, "calls": ["read_diff"], "forced": false}
+{"t": 10.4809, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 344}
+{"t": 22.2451, "kind": "llm", "step": 1, "in_tokens": 1132, "out_tokens": 12, "seconds": 10.899, "calls": ["get_changed_functions"], "forced": false}
+{"t": 22.2518, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 6.52, "out_chars": 40}
+{"t": 23.0855, "kind": "llm", "step": 2, "in_tokens": 1172, "out_tokens": 38, "seconds": 0.833, "calls": ["read_file"], "forced": false}
+{"t": 23.0858, "kind": "tool", "name": "read_file", "args": {"start_line": 200, "path": "boltons/jsonutils.py", "end_line": 230}, "ms": 0.11, "out_chars": 1137}
+{"t": 37.6893, "kind": "llm", "step": 3, "in_tokens": 1626, "out_tokens": 23, "seconds": 7.937, "calls": ["read_log"], "forced": false}
+{"t": 37.6896, "kind": "tool", "name": "read_log", "args": {"start_line": 1, "num_lines": 50}, "ms": 0.09, "out_chars": 3193}
+{"t": 40.4305, "kind": "llm", "step": 4, "in_tokens": 2688, "out_tokens": 146, "seconds": 2.74, "calls": ["submit_report"], "forced": false}
+{"t": 40.4307, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/jsonutils.py", "culprit_function": "JSONLIterator.next", "confidence": "high", "evidence": "The change to `boltons/jsonutils.py` inverted the logic of the whitespace check (`if line` instead of `if not line`), which causes the iterator to skip non-empty lines and attempt to `json.loads` empty or whitespace-only lines, leading to `JSONDecodeError`.", "suggested_action": "Revert the condition in `JSONLIterator.next` back to `if not line: continue`."}}
+{"t": 40.4309, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/jsonutils.py", "culprit_function": "JSONLIterator.next", "confidence": "high", "evidence": "The change to `boltons/jsonutils.py` inverted the logic of the whitespace check (`if line` instead of `if not line`), which causes the iterator to skip non-empty lines and attempt to `json.loads` empty or whitespace-only lines, leading to `JSONDecodeError`.", "suggested_action": "Revert the condition in `JSONLIterator.next` back to `if not line: continue`."}, "latency_seconds": 29.055}

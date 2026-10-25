@@ -1,0 +1,14 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-005", "system": "agent"}
+{"t": 6.9914, "kind": "llm", "step": 0, "in_tokens": 941, "out_tokens": 19, "seconds": 0.746, "calls": ["search_log"], "forced": false}
+{"t": 6.9918, "kind": "tool", "name": "search_log", "args": {"pattern": "test_contextual"}, "ms": 0.2, "out_chars": 227}
+{"t": 14.4503, "kind": "llm", "step": 1, "in_tokens": 1038, "out_tokens": 24, "seconds": 0.704, "calls": ["read_log"], "forced": false}
+{"t": 14.4505, "kind": "tool", "name": "read_log", "args": {"num_lines": 50, "start_line": 10}, "ms": 0.04, "out_chars": 1421}
+{"t": 27.673, "kind": "llm", "step": 2, "in_tokens": 1571, "out_tokens": 10, "seconds": 6.427, "calls": ["read_diff"], "forced": false}
+{"t": 27.6732, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1606}
+{"t": 29.6148, "kind": "llm", "step": 3, "in_tokens": 2151, "out_tokens": 12, "seconds": 0.869, "calls": ["get_changed_functions"], "forced": false}
+{"t": 29.6531, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 38.19, "out_chars": 160}
+{"t": 42.4002, "kind": "llm", "step": 4, "in_tokens": 2234, "out_tokens": 38, "seconds": 6.154, "calls": ["read_file"], "forced": false}
+{"t": 42.4005, "kind": "tool", "name": "read_file", "args": {"path": "boltons/tbutils.py", "start_line": 180, "end_line": 200}, "ms": 0.17, "out_chars": 834}
+{"t": 50.7485, "kind": "llm", "step": 5, "in_tokens": 2606, "out_tokens": 148, "seconds": 7.002, "calls": ["submit_report"], "forced": false}
+{"t": 50.7488, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/tbutils.py", "culprit_function": "_DeferredLine.__init__", "confidence": "high", "evidence": "The change in _DeferredLine.__init__ inverted the logic for handling module_globals, causing NoneType to be accessed when module_globals is None. Specifically, lines 187-192 now attempt to call .get() on module_globals when it is None, instead of when it is provided.", "suggested_action": "Revert the logic inversion in boltons/tbutils.py or fix the conditional check."}}
+{"t": 50.7489, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/tbutils.py", "culprit_function": "_DeferredLine.__init__", "confidence": "high", "evidence": "The change in _DeferredLine.__init__ inverted the logic for handling module_globals, causing NoneType to be accessed when module_globals is None. Specifically, lines 187-192 now attempt to call .get() on module_globals when it is None, instead of when it is provided.", "suggested_action": "Revert the logic inversion in boltons/tbutils.py or fix the conditional check."}, "latency_seconds": 21.944}

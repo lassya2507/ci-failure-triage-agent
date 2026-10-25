@@ -1,0 +1,18 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-017", "system": "agent"}
+{"t": 10.4246, "kind": "llm", "step": 0, "in_tokens": 931, "out_tokens": 18, "seconds": 4.442, "calls": ["read_log"], "forced": false}
+{"t": 10.4248, "kind": "tool", "name": "read_log", "args": {"num_lines": 100}, "ms": 0.04, "out_chars": 1410}
+{"t": 14.7412, "kind": "llm", "step": 1, "in_tokens": 1310, "out_tokens": 10, "seconds": 1.259, "calls": ["read_diff"], "forced": false}
+{"t": 14.7414, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1257}
+{"t": 23.4261, "kind": "llm", "step": 2, "in_tokens": 1766, "out_tokens": 12, "seconds": 2.444, "calls": ["get_changed_functions"], "forced": false}
+{"t": 23.4542, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 27.82, "out_chars": 151}
+{"t": 29.6456, "kind": "llm", "step": 3, "in_tokens": 1842, "out_tokens": 38, "seconds": 1.163, "calls": ["read_file"], "forced": false}
+{"t": 29.6458, "kind": "tool", "name": "read_file", "args": {"path": "boltons/queueutils.py", "end_line": 225, "start_line": 200}, "ms": 0.09, "out_chars": 773}
+{"t": 69.2454, "kind": "llm", "step": 4, "in_tokens": 2196, "out_tokens": 37, "seconds": 33.263, "calls": ["read_file"], "forced": false}
+{"t": 69.2458, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_queueutils.py", "end_line": 20, "start_line": 10}, "ms": 0.24, "out_chars": 356}
+{"t": 70.2654, "kind": "llm", "step": 5, "in_tokens": 2407, "out_tokens": 21, "seconds": 1.019, "calls": ["search_log"], "forced": false}
+{"t": 70.2658, "kind": "tool", "name": "search_log", "args": {"pattern": "_test_priority_queue"}, "ms": 0.15, "out_chars": 112}
+{"t": 78.2801, "kind": "llm", "step": 6, "in_tokens": 2481, "out_tokens": 36, "seconds": 1.534, "calls": ["read_file"], "forced": false}
+{"t": 78.2807, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_queueutils.py", "start_line": 1, "end_line": 20}, "ms": 0.31, "out_chars": 617}
+{"t": 85.6368, "kind": "llm", "step": 7, "in_tokens": 2791, "out_tokens": 174, "seconds": 1.39, "calls": ["submit_report"], "forced": false}
+{"t": 85.637, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/queueutils.py", "culprit_function": "SortedPriorityQueue._pop_entry", "confidence": "high", "evidence": "The change to SortedPriorityQueue._pop_entry changed the pop index from 0 to 1. In the failing test case, the queue contains three items with priorities 2, 7, and 9. The expected behavior for a priority queue when calling pop() is to remove the element with the highest priority (9, 'b'). Popping index 1 instead of 0 disrupts the expected sorted order removal.", "suggested_action": "Revert the change in boltons/queueutils.py from pop(1) back to pop(0)."}}
+{"t": 85.6371, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/queueutils.py", "culprit_function": "SortedPriorityQueue._pop_entry", "confidence": "high", "evidence": "The change to SortedPriorityQueue._pop_entry changed the pop index from 0 to 1. In the failing test case, the queue contains three items with priorities 2, 7, and 9. The expected behavior for a priority queue when calling pop() is to remove the element with the highest priority (9, 'b'). Popping index 1 instead of 0 disrupts the expected sorted order removal.", "suggested_action": "Revert the change in boltons/queueutils.py from pop(1) back to pop(0)."}, "latency_seconds": 46.548}

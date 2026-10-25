@@ -1,0 +1,12 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-035", "system": "agent"}
+{"t": 12.8759, "kind": "llm", "step": 0, "in_tokens": 1041, "out_tokens": 10, "seconds": 6.686, "calls": ["read_diff"], "forced": false}
+{"t": 12.8761, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1545}
+{"t": 14.7168, "kind": "llm", "step": 1, "in_tokens": 1577, "out_tokens": 12, "seconds": 1.027, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.7384, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 21.45, "out_chars": 154}
+{"t": 22.0323, "kind": "llm", "step": 2, "in_tokens": 1655, "out_tokens": 30, "seconds": 0.842, "calls": ["read_file"], "forced": false}
+{"t": 22.0327, "kind": "tool", "name": "read_file", "args": {"start_line": 140, "path": "boltons/statsutils.py"}, "ms": 0.19, "out_chars": 4223}
+{"t": 32.6205, "kind": "llm", "step": 3, "in_tokens": 3131, "out_tokens": 16, "seconds": 3.93, "calls": ["search_log"], "forced": false}
+{"t": 32.6208, "kind": "tool", "name": "search_log", "args": {"pattern": "regression"}, "ms": 0.13, "out_chars": 245}
+{"t": 37.4994, "kind": "llm", "step": 4, "in_tokens": 3227, "out_tokens": 152, "seconds": 1.309, "calls": ["submit_report"], "forced": false}
+{"t": 37.4996, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/statsutils.py", "culprit_function": "_StatsProperty.__get__", "confidence": "high", "evidence": "The change in _StatsProperty.__get__ inverted the conditional logic (from 'if not obj.data' to 'if obj.data'). As a result, the code now returns the default value whenever data is present, rather than when it is empty, causing widespread failures in statistical calculations.", "suggested_action": "Revert the change in boltons/statsutils.py to restore the original logic (if not obj.data: return obj.default)."}}
+{"t": 37.4997, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/statsutils.py", "culprit_function": "_StatsProperty.__get__", "confidence": "high", "evidence": "The change in _StatsProperty.__get__ inverted the conditional logic (from 'if not obj.data' to 'if obj.data'). As a result, the code now returns the default value whenever data is present, rather than when it is empty, causing widespread failures in statistical calculations.", "suggested_action": "Revert the change in boltons/statsutils.py to restore the original logic (if not obj.data: return obj.default)."}, "latency_seconds": 13.819}

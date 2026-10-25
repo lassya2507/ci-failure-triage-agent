@@ -1,0 +1,10 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-013", "system": "agent"}
+{"t": 7.1258, "kind": "llm", "step": 0, "in_tokens": 1007, "out_tokens": 12, "seconds": 0.905, "calls": ["get_changed_functions"], "forced": false}
+{"t": 7.1637, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 37.74, "out_chars": 120}
+{"t": 14.6325, "kind": "llm", "step": 1, "in_tokens": 1075, "out_tokens": 10, "seconds": 0.911, "calls": ["read_diff"], "forced": false}
+{"t": 14.6327, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1534}
+{"t": 25.3301, "kind": "llm", "step": 2, "in_tokens": 1565, "out_tokens": 17, "seconds": 4.109, "calls": ["read_log"], "forced": false}
+{"t": 25.3304, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.06, "out_chars": 3501}
+{"t": 29.895, "kind": "llm", "step": 3, "in_tokens": 2581, "out_tokens": 136, "seconds": 1.173, "calls": ["submit_report"], "forced": false}
+{"t": 29.8952, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/timeutils.py", "culprit_function": "daterange", "confidence": "high", "evidence": "The change in boltons/timeutils.py line 415 changed a subtraction operation (`stop - prev`) to an addition operation (`stop + prev`). This is invalid for `datetime` and `date` objects, causing the `TypeError` observed in the tests.", "suggested_action": "Revert the change from `+` to `-` in boltons/timeutils.py."}}
+{"t": 29.8954, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/timeutils.py", "culprit_function": "daterange", "confidence": "high", "evidence": "The change in boltons/timeutils.py line 415 changed a subtraction operation (`stop - prev`) to an addition operation (`stop + prev`). This is invalid for `datetime` and `date` objects, causing the `TypeError` observed in the tests.", "suggested_action": "Revert the change from `+` to `-` in boltons/timeutils.py."}, "latency_seconds": 7.139}

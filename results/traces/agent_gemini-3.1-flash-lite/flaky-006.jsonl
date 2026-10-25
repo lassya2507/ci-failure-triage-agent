@@ -1,0 +1,14 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-006", "system": "agent"}
+{"t": 1.4094, "kind": "llm", "step": 0, "in_tokens": 927, "out_tokens": 10, "seconds": 0.929, "calls": ["read_diff"], "forced": false}
+{"t": 1.4095, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 676}
+{"t": 8.6395, "kind": "llm", "step": 1, "in_tokens": 1188, "out_tokens": 17, "seconds": 0.659, "calls": ["read_log"], "forced": false}
+{"t": 8.6397, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.03, "out_chars": 1231}
+{"t": 16.1654, "kind": "llm", "step": 2, "in_tokens": 1505, "out_tokens": 30, "seconds": 0.685, "calls": ["read_file"], "forced": false}
+{"t": 16.1656, "kind": "tool", "name": "read_file", "args": {"start_line": 20, "path": "tests/test_namedutils.py"}, "ms": 0.05, "out_chars": 1270}
+{"t": 23.8208, "kind": "llm", "step": 3, "in_tokens": 2021, "out_tokens": 12, "seconds": 0.84, "calls": ["get_changed_functions"], "forced": false}
+{"t": 23.8359, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 15.01, "out_chars": 86}
+{"t": 31.5507, "kind": "llm", "step": 4, "in_tokens": 2077, "out_tokens": 33, "seconds": 1.07, "calls": ["rerun_test"], "forced": false}
+{"t": 31.5509, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_namedutils.py::test_namedtuple_pickle"}, "ms": 0.01, "out_chars": 172}
+{"t": 39.236, "kind": "llm", "step": 5, "in_tokens": 2172, "out_tokens": 131, "seconds": 1.255, "calls": ["submit_report"], "forced": false}
+{"t": 39.2363, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test failure `assert 52 < 24` was caused by a random number generation check in `tests/test_namedutils.py::test_namedtuple_pickle`. The test passed upon rerun and the changed library code (boltons/fileutils.py and boltons/tableutils.py) is completely unrelated to this test.", "suggested_action": "The test should be fixed to avoid reliance on random sorting or seeded if it's meant to be deterministic."}}
+{"t": 39.2364, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test failure `assert 52 < 24` was caused by a random number generation check in `tests/test_namedutils.py::test_namedtuple_pickle`. The test passed upon rerun and the changed library code (boltons/fileutils.py and boltons/tableutils.py) is completely unrelated to this test.", "suggested_action": "The test should be fixed to avoid reliance on random sorting or seeded if it's meant to be deterministic."}, "latency_seconds": 5.74}

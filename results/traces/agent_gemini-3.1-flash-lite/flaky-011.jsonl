@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-011", "system": "agent"}
+{"t": 6.8578, "kind": "llm", "step": 0, "in_tokens": 921, "out_tokens": 10, "seconds": 0.634, "calls": ["read_diff"], "forced": false}
+{"t": 6.8581, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 368}
+{"t": 14.5482, "kind": "llm", "step": 1, "in_tokens": 1077, "out_tokens": 12, "seconds": 0.824, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.5575, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 9.17, "out_chars": 45}
+{"t": 21.9672, "kind": "llm", "step": 2, "in_tokens": 1119, "out_tokens": 33, "seconds": 0.743, "calls": ["search_log"], "forced": false}
+{"t": 21.9677, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_typeutils.py::test_sentinel_falsiness"}, "ms": 0.25, "out_chars": 79}
+{"t": 29.7093, "kind": "llm", "step": 3, "in_tokens": 1197, "out_tokens": 23, "seconds": 0.985, "calls": ["read_file"], "forced": false}
+{"t": 29.7095, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_typeutils.py"}, "ms": 0.04, "out_chars": 657}
+{"t": 37.2959, "kind": "llm", "step": 4, "in_tokens": 1488, "out_tokens": 16, "seconds": 1.072, "calls": ["read_log"], "forced": false}
+{"t": 37.2961, "kind": "tool", "name": "read_log", "args": {"start_line": 1}, "ms": 0.03, "out_chars": 1231}
+{"t": 48.5639, "kind": "llm", "step": 5, "in_tokens": 1810, "out_tokens": 35, "seconds": 4.839, "calls": ["rerun_test"], "forced": false}
+{"t": 48.5641, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_typeutils.py::test_sentinel_falsiness"}, "ms": 0.01, "out_chars": 172}
+{"t": 52.3833, "kind": "llm", "step": 6, "in_tokens": 1909, "out_tokens": 142, "seconds": 1.159, "calls": ["submit_report"], "forced": false}
+{"t": 52.3835, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test failed due to a random sample check (`assert sample[0] < sample[1]`) in `test_sentinel_falsiness`, which can fail depending on the values chosen by `random.sample`. The failure was reproduced as a flake and passed upon rerunning. The changed file `boltons/tbutils.py` is unrelated to this test.", "suggested_action": "The test should be updated to use a reliable check, such as ensuring distinct values or using a fixed seed, instead of relying on pure chance."}}
+{"t": 52.3837, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test failed due to a random sample check (`assert sample[0] < sample[1]`) in `test_sentinel_falsiness`, which can fail depending on the values chosen by `random.sample`. The failure was reproduced as a flake and passed upon rerunning. The changed file `boltons/tbutils.py` is unrelated to this test.", "suggested_action": "The test should be updated to use a reliable check, such as ensuring distinct values or using a fixed seed, instead of relying on pure chance."}, "latency_seconds": 10.549}

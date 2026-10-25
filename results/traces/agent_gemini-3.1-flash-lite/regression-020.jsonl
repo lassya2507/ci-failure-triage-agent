@@ -1,0 +1,12 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-020", "system": "agent"}
+{"t": 22.9092, "kind": "llm", "step": 0, "in_tokens": 942, "out_tokens": 17, "seconds": 16.643, "calls": ["read_log"], "forced": false}
+{"t": 22.9094, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.04, "out_chars": 1286}
+{"t": 25.8645, "kind": "llm", "step": 1, "in_tokens": 1272, "out_tokens": 39, "seconds": 2.955, "calls": ["read_file"], "forced": false}
+{"t": 25.8651, "kind": "tool", "name": "read_file", "args": {"start_line": 450, "end_line": 470, "path": "tests/test_cacheutils.py"}, "ms": 0.42, "out_chars": 628}
+{"t": 31.1286, "kind": "llm", "step": 2, "in_tokens": 1625, "out_tokens": 10, "seconds": 0.719, "calls": ["read_diff"], "forced": false}
+{"t": 31.1289, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1600}
+{"t": 39.5503, "kind": "llm", "step": 3, "in_tokens": 2201, "out_tokens": 12, "seconds": 1.64, "calls": ["get_changed_functions"], "forced": false}
+{"t": 39.5882, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 37.7, "out_chars": 177}
+{"t": 46.8162, "kind": "llm", "step": 4, "in_tokens": 2282, "out_tokens": 146, "seconds": 1.406, "calls": ["submit_report"], "forced": false}
+{"t": 46.8164, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/cacheutils.py", "culprit_function": "ThresholdCounter.__contains__", "confidence": "high", "evidence": "The diff shows that ThresholdCounter.__contains__ was changed from `return key in self._count_map` to `return key not in self._count_map`. This obviously inverts the logic of the `in` operator, causing the failing assertion `assert 5 in tc`.", "suggested_action": "Revert the change in `boltons/cacheutils.py` to restore the correct logic for `__contains__`."}}
+{"t": 46.8166, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/cacheutils.py", "culprit_function": "ThresholdCounter.__contains__", "confidence": "high", "evidence": "The diff shows that ThresholdCounter.__contains__ was changed from `return key in self._count_map` to `return key not in self._count_map`. This obviously inverts the logic of the `in` operator, causing the failing assertion `assert 5 in tc`.", "suggested_action": "Revert the change in `boltons/cacheutils.py` to restore the correct logic for `__contains__`."}, "latency_seconds": 23.405}

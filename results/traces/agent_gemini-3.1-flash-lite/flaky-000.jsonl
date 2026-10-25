@@ -1,0 +1,16 @@
+{"t": 0.0001, "kind": "case_start", "case": "flaky-000", "system": "agent"}
+{"t": 0.7937, "kind": "llm", "step": 0, "in_tokens": 921, "out_tokens": 10, "seconds": 0.793, "calls": ["read_diff"], "forced": false}
+{"t": 0.7939, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 607}
+{"t": 9.5373, "kind": "llm", "step": 1, "in_tokens": 1144, "out_tokens": 12, "seconds": 2.036, "calls": ["get_changed_functions"], "forced": false}
+{"t": 9.5387, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 1.27, "out_chars": 65}
+{"t": 17.4134, "kind": "llm", "step": 2, "in_tokens": 1192, "out_tokens": 35, "seconds": 2.412, "calls": ["search_log"], "forced": false}
+{"t": 17.4137, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_fileutils.py::test_iter_find_files_pathlike"}, "ms": 0.19, "out_chars": 83}
+{"t": 23.2474, "kind": "llm", "step": 3, "in_tokens": 1272, "out_tokens": 23, "seconds": 0.746, "calls": ["read_log"], "forced": false}
+{"t": 23.2477, "kind": "tool", "name": "read_log", "args": {"num_lines": 50, "start_line": 1}, "ms": 0.05, "out_chars": 1433}
+{"t": 31.2774, "kind": "llm", "step": 4, "in_tokens": 1702, "out_tokens": 37, "seconds": 1.276, "calls": ["read_file"], "forced": false}
+{"t": 31.2776, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_fileutils.py", "start_line": 30, "end_line": 50}, "ms": 0.06, "out_chars": 772}
+{"t": 39.1316, "kind": "llm", "step": 5, "in_tokens": 2062, "out_tokens": 37, "seconds": 1.63, "calls": ["rerun_test"], "forced": false}
+{"t": 39.1318, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_fileutils.py::test_iter_find_files_pathlike"}, "ms": 0.02, "out_chars": 456}
+{"t": 46.1284, "kind": "llm", "step": 6, "in_tokens": 2293, "out_tokens": 158, "seconds": 1.127, "calls": ["submit_report"], "forced": false}
+{"t": 46.1287, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_iter_find_files_pathlike` uses `random.shuffle` on a list of 10 elements and asserts that the index of `0` is less than `7`. This assertion will fail ~30% of the time, as shown by the fact that it failed with different values upon rerunning. The changed file `boltons/typeutils.py` is unrelated to `tests/test_fileutils.py` and the `iter_find_files` function.", "suggested_action": "Fix the flaky test by removing the random index assertion or using a fixed seed."}}
+{"t": 46.1288, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_iter_find_files_pathlike` uses `random.shuffle` on a list of 10 elements and asserts that the index of `0` is less than `7`. This assertion will fail ~30% of the time, as shown by the fact that it failed with different values upon rerunning. The changed file `boltons/typeutils.py` is unrelated to `tests/test_fileutils.py` and the `iter_find_files` function.", "suggested_action": "Fix the flaky test by removing the random index assertion or using a fixed seed."}, "latency_seconds": 10.374}

@@ -1,0 +1,10 @@
+{"t": 0.0, "kind": "case_start", "case": "infra-014", "system": "agent"}
+{"t": 27.5237, "kind": "llm", "step": 0, "in_tokens": 1218, "out_tokens": 10, "seconds": 23.739, "calls": ["read_diff"], "forced": false}
+{"t": 27.5239, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 447}
+{"t": 31.6444, "kind": "llm", "step": 1, "in_tokens": 1369, "out_tokens": 12, "seconds": 4.12, "calls": ["get_changed_functions"], "forced": false}
+{"t": 31.6588, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 14.24, "out_chars": 27}
+{"t": 36.0307, "kind": "llm", "step": 2, "in_tokens": 1406, "out_tokens": 17, "seconds": 1.006, "calls": ["read_log"], "forced": false}
+{"t": 36.0309, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.09, "out_chars": 3228}
+{"t": 45.5799, "kind": "llm", "step": 3, "in_tokens": 2482, "out_tokens": 120, "seconds": 3.055, "calls": ["submit_report"], "forced": false}
+{"t": 45.5801, "kind": "submit", "ok": true, "report": {"category": "infra", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The tests are failing with 'OSError: [Errno 24] Too many open files'. This error indicates a system resource exhaustion (file descriptor limit) in the CI environment. The changes made in the diff (a comment in boltons/iterutils.py) are entirely unrelated to socket handling or file descriptors.", "suggested_action": "Check for resource leaks in the test suite or increase the file descriptor limit in the CI environment."}}
+{"t": 45.5803, "kind": "case_end", "report": {"category": "infra", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The tests are failing with 'OSError: [Errno 24] Too many open files'. This error indicates a system resource exhaustion (file descriptor limit) in the CI environment. The changes made in the diff (a comment in boltons/iterutils.py) are entirely unrelated to socket handling or file descriptors.", "suggested_action": "Check for resource leaks in the test suite or increase the file descriptor limit in the CI environment."}, "latency_seconds": 31.938}

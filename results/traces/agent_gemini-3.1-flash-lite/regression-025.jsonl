@@ -1,0 +1,12 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-025", "system": "agent"}
+{"t": 6.9376, "kind": "llm", "step": 0, "in_tokens": 933, "out_tokens": 17, "seconds": 0.864, "calls": ["read_log"], "forced": false}
+{"t": 6.9379, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.05, "out_chars": 1510}
+{"t": 16.9429, "kind": "llm", "step": 1, "in_tokens": 1371, "out_tokens": 10, "seconds": 3.369, "calls": ["read_diff"], "forced": false}
+{"t": 16.9431, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1232}
+{"t": 23.2931, "kind": "llm", "step": 2, "in_tokens": 1784, "out_tokens": 12, "seconds": 2.219, "calls": ["get_changed_functions"], "forced": false}
+{"t": 23.317, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 23.67, "out_chars": 136}
+{"t": 31.6731, "kind": "llm", "step": 3, "in_tokens": 1857, "out_tokens": 38, "seconds": 3.099, "calls": ["read_file"], "forced": false}
+{"t": 31.6736, "kind": "tool", "name": "read_file", "args": {"end_line": 930, "path": "boltons/strutils.py", "start_line": 900}, "ms": 0.3, "out_chars": 1114}
+{"t": 37.6458, "kind": "llm", "step": 4, "in_tokens": 2364, "out_tokens": 163, "seconds": 1.572, "calls": ["submit_report"], "forced": false}
+{"t": 37.646, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/strutils.py", "culprit_function": "parse_int_list", "confidence": "high", "evidence": "The code change in `boltons/strutils.py` inverted the condition for identifying ranges (`if range_delim not in x:`), causing the function to attempt to treat range expressions like '5-8' as single integers, resulting in a `ValueError`. The logic clearly intended for `if range_delim in x:` to handle ranges.", "suggested_action": "Revert the condition in `boltons/strutils.py` to `if range_delim in x:` to correctly handle integer ranges."}}
+{"t": 37.6461, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/strutils.py", "culprit_function": "parse_int_list", "confidence": "high", "evidence": "The code change in `boltons/strutils.py` inverted the condition for identifying ranges (`if range_delim not in x:`), causing the function to attempt to treat range expressions like '5-8' as single integers, resulting in a `ValueError`. The logic clearly intended for `if range_delim in x:` to handle ranges.", "suggested_action": "Revert the condition in `boltons/strutils.py` to `if range_delim in x:` to correctly handle integer ranges."}, "latency_seconds": 11.152}

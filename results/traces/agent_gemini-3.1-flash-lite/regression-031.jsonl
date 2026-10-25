@@ -1,0 +1,22 @@
+{"t": 0.0003, "kind": "case_start", "case": "regression-031", "system": "agent"}
+{"t": 8.6991, "kind": "llm", "step": 0, "in_tokens": 921, "out_tokens": 10, "seconds": 8.544, "calls": ["read_diff"], "forced": false}
+{"t": 8.6994, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.07, "out_chars": 14171}
+{"t": 9.8049, "kind": "llm", "step": 1, "in_tokens": 5152, "out_tokens": 24, "seconds": 1.105, "calls": ["search_log"], "forced": false}
+{"t": 9.8052, "kind": "tool", "name": "search_log", "args": {"pattern": "ERROR tests/test_namedutils.py"}, "ms": 0.14, "out_chars": 87}
+{"t": 17.2517, "kind": "llm", "step": 2, "in_tokens": 5212, "out_tokens": 23, "seconds": 1.052, "calls": ["read_file"], "forced": false}
+{"t": 17.2521, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_namedutils.py"}, "ms": 0.27, "out_chars": 1663}
+{"t": 29.6776, "kind": "llm", "step": 3, "in_tokens": 5898, "out_tokens": 38, "seconds": 5.978, "calls": ["read_file"], "forced": false}
+{"t": 29.6779, "kind": "tool", "name": "read_file", "args": {"end_line": 150, "path": "boltons/namedutils.py", "start_line": 130}, "ms": 0.1, "out_chars": 1046}
+{"t": 34.0081, "kind": "llm", "step": 4, "in_tokens": 6327, "out_tokens": 24, "seconds": 2.808, "calls": ["search_log"], "forced": false}
+{"t": 34.0084, "kind": "tool", "name": "search_log", "args": {"pattern": "ERROR tests/test_namedutils.py"}, "ms": 0.03, "out_chars": 87}
+{"t": 41.4602, "kind": "llm", "step": 5, "in_tokens": 6387, "out_tokens": 23, "seconds": 2.76, "calls": ["read_log"], "forced": false}
+{"t": 41.4604, "kind": "tool", "name": "read_log", "args": {"num_lines": 20, "start_line": 1}, "ms": 0.03, "out_chars": 919}
+{"t": 52.201, "kind": "llm", "step": 6, "in_tokens": 6666, "out_tokens": 38, "seconds": 6.001, "calls": ["read_file"], "forced": false}
+{"t": 52.2013, "kind": "tool", "name": "read_file", "args": {"start_line": 155, "path": "boltons/namedutils.py", "end_line": 170}, "ms": 0.16, "out_chars": 905}
+{"t": 54.7198, "kind": "llm", "step": 7, "in_tokens": 6989, "out_tokens": 26, "seconds": 1.019, "calls": ["search_log"], "forced": false}
+{"t": 54.7201, "kind": "tool", "name": "search_log", "args": {"pattern": "boltons/namedutils.py:163"}, "ms": 0.12, "out_chars": 10}
+{"t": 62.2911, "kind": "llm", "step": 8, "in_tokens": 7030, "out_tokens": 38, "seconds": 1.09, "calls": ["read_file"], "forced": false}
+{"t": 62.2914, "kind": "tool", "name": "read_file", "args": {"start_line": 163, "path": "boltons/namedutils.py", "end_line": 166}, "ms": 0.12, "out_chars": 345}
+{"t": 72.5729, "kind": "llm", "step": 9, "in_tokens": 7176, "out_tokens": 167, "seconds": 3.872, "calls": ["submit_report"], "forced": true}
+{"t": 72.594, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/namedutils.py", "culprit_function": "namedtuple", "confidence": "high", "evidence": "The condition in the `namedtuple` validation logic was changed from `not all(c.isalnum() or c == '_' for c in name)` to `all(c.isalnum() or c == '_' for c in name)`, which causes valid names like 'Point' to be rejected and triggers a ValueError. This broke collection of `tests/test_namedutils.py`.", "suggested_action": "Revert the logic in the validation loop to correctly use `not all(...)` to check for invalid characters, effectively allowing valid alphanumeric names."}}
+{"t": 72.5944, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/namedutils.py", "culprit_function": "namedtuple", "confidence": "high", "evidence": "The condition in the `namedtuple` validation logic was changed from `not all(c.isalnum() or c == '_' for c in name)` to `all(c.isalnum() or c == '_' for c in name)`, which causes valid names like 'Point' to be rejected and triggers a ValueError. This broke collection of `tests/test_namedutils.py`.", "suggested_action": "Revert the logic in the validation loop to correctly use `not all(...)` to check for invalid characters, effectively allowing valid alphanumeric names."}, "latency_seconds": 34.258}

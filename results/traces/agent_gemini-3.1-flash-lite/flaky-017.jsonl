@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-017", "system": "agent"}
+{"t": 2.8305, "kind": "llm", "step": 0, "in_tokens": 918, "out_tokens": 10, "seconds": 0.635, "calls": ["read_diff"], "forced": false}
+{"t": 2.8307, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 426}
+{"t": 16.2474, "kind": "llm", "step": 1, "in_tokens": 1086, "out_tokens": 12, "seconds": 6.552, "calls": ["get_changed_functions"], "forced": false}
+{"t": 16.2567, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 9.12, "out_chars": 47}
+{"t": 20.4129, "kind": "llm", "step": 2, "in_tokens": 1129, "out_tokens": 30, "seconds": 3.217, "calls": ["search_log"], "forced": false}
+{"t": 20.4132, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_queueutils.py::test_sorted_queue"}, "ms": 0.17, "out_chars": 74}
+{"t": 25.7575, "kind": "llm", "step": 3, "in_tokens": 1201, "out_tokens": 23, "seconds": 1.061, "calls": ["read_log"], "forced": false}
+{"t": 25.758, "kind": "tool", "name": "read_log", "args": {"num_lines": 20, "start_line": 1}, "ms": 0.04, "out_chars": 1221}
+{"t": 35.2924, "kind": "llm", "step": 4, "in_tokens": 1521, "out_tokens": 37, "seconds": 3.096, "calls": ["read_file"], "forced": false}
+{"t": 35.2927, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_queueutils.py", "end_line": 60, "start_line": 40}, "ms": 0.04, "out_chars": 448}
+{"t": 43.9276, "kind": "llm", "step": 5, "in_tokens": 1744, "out_tokens": 32, "seconds": 4.231, "calls": ["rerun_test"], "forced": false}
+{"t": 43.9278, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_queueutils.py::test_sorted_queue"}, "ms": 0.01, "out_chars": 167}
+{"t": 48.4949, "kind": "llm", "step": 6, "in_tokens": 1837, "out_tokens": 104, "seconds": 1.299, "calls": ["submit_report"], "forced": false}
+{"t": 48.4952, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_sorted_queue` uses `random.sample` to generate inputs and asserts an order that is not guaranteed. Rerunning the test proved it to be flaky and unrelated to the changes in `boltons/tbutils.py`.", "suggested_action": "Update the test to use a fixed seed or a deterministic check for queue properties."}}
+{"t": 48.4954, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_sorted_queue` uses `random.sample` to generate inputs and asserts an order that is not guaranteed. Rerunning the test proved it to be flaky and unrelated to the changes in `boltons/tbutils.py`.", "suggested_action": "Update the test to use a fixed seed or a deterministic check for queue properties."}, "latency_seconds": 20.4}

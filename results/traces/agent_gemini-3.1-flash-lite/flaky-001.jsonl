@@ -1,0 +1,16 @@
+{"t": 0.0001, "kind": "case_start", "case": "flaky-001", "system": "agent"}
+{"t": 1.1879, "kind": "llm", "step": 0, "in_tokens": 923, "out_tokens": 10, "seconds": 1.187, "calls": ["read_diff"], "forced": false}
+{"t": 1.1881, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 366}
+{"t": 8.2285, "kind": "llm", "step": 1, "in_tokens": 1097, "out_tokens": 12, "seconds": 0.728, "calls": ["get_changed_functions"], "forced": false}
+{"t": 8.2327, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 4.02, "out_chars": 29}
+{"t": 22.9164, "kind": "llm", "step": 2, "in_tokens": 1137, "out_tokens": 38, "seconds": 7.915, "calls": ["search_log"], "forced": false}
+{"t": 22.9167, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_tbutils_parsed_exc.py::test_parsed_exc_nosrcline"}, "ms": 0.17, "out_chars": 87}
+{"t": 31.0293, "kind": "llm", "step": 3, "in_tokens": 1221, "out_tokens": 23, "seconds": 8.112, "calls": ["read_log"], "forced": false}
+{"t": 31.0295, "kind": "tool", "name": "read_log", "args": {"start_line": 1, "num_lines": 50}, "ms": 0.03, "out_chars": 1442}
+{"t": 31.7453, "kind": "llm", "step": 4, "in_tokens": 1648, "out_tokens": 27, "seconds": 0.715, "calls": ["read_file"], "forced": false}
+{"t": 31.7456, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_tbutils_parsed_exc.py"}, "ms": 0.14, "out_chars": 4649}
+{"t": 39.5493, "kind": "llm", "step": 5, "in_tokens": 3295, "out_tokens": 40, "seconds": 1.019, "calls": ["rerun_test"], "forced": false}
+{"t": 39.5495, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_tbutils_parsed_exc.py::test_parsed_exc_nosrcline"}, "ms": 0.02, "out_chars": 183}
+{"t": 47.3924, "kind": "llm", "step": 6, "in_tokens": 3404, "out_tokens": 127, "seconds": 1.362, "calls": ["submit_report"], "forced": false}
+{"t": 47.3927, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The failing test `test_parsed_exc_nosrcline` contains a `random.shuffle()` call and an assertion that depends on the shuffled order (`assert items.index(0) < 7`), which is nondeterministic. The test passed upon a rerun. The change to `boltons/ecoutils.py` is unrelated to this test.", "suggested_action": "Fix the test to remove the nondeterministic dependency or use a fixed seed."}}
+{"t": 47.3929, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The failing test `test_parsed_exc_nosrcline` contains a `random.shuffle()` call and an assertion that depends on the shuffled order (`assert items.index(0) < 7`), which is nondeterministic. The test passed upon a rerun. The change to `boltons/ecoutils.py` is unrelated to this test.", "suggested_action": "Fix the test to remove the nondeterministic dependency or use a fixed seed."}, "latency_seconds": 21.368}

@@ -1,0 +1,22 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-006", "system": "agent"}
+{"t": 13.3936, "kind": "llm", "step": 0, "in_tokens": 977, "out_tokens": 10, "seconds": 12.896, "calls": ["read_diff"], "forced": false}
+{"t": 13.3938, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 1225}
+{"t": 22.5057, "kind": "llm", "step": 1, "in_tokens": 1428, "out_tokens": 12, "seconds": 9.112, "calls": ["get_changed_functions"], "forced": false}
+{"t": 22.5382, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 32.39, "out_chars": 124}
+{"t": 23.2467, "kind": "llm", "step": 2, "in_tokens": 1497, "out_tokens": 18, "seconds": 0.708, "calls": ["read_log"], "forced": false}
+{"t": 23.2469, "kind": "tool", "name": "read_log", "args": {"num_lines": 150}, "ms": 0.04, "out_chars": 2293}
+{"t": 30.8491, "kind": "llm", "step": 3, "in_tokens": 2189, "out_tokens": 22, "seconds": 0.81, "calls": ["read_file"], "forced": false}
+{"t": 30.8496, "kind": "tool", "name": "read_file", "args": {"path": "boltons/urlutils.py"}, "ms": 0.36, "out_chars": 5463}
+{"t": 38.9233, "kind": "llm", "step": 4, "in_tokens": 4157, "out_tokens": 21, "seconds": 1.384, "calls": ["search_log"], "forced": false}
+{"t": 38.9236, "kind": "tool", "name": "search_log", "args": {"pattern": "def resolve_path_parts"}, "ms": 0.14, "out_chars": 10}
+{"t": 45.9076, "kind": "llm", "step": 5, "in_tokens": 4193, "out_tokens": 20, "seconds": 0.869, "calls": ["search_log"], "forced": false}
+{"t": 45.9079, "kind": "tool", "name": "search_log", "args": {"pattern": "resolve_path_parts"}, "ms": 0.12, "out_chars": 10}
+{"t": 53.9428, "kind": "llm", "step": 6, "in_tokens": 4228, "out_tokens": 19, "seconds": 1.404, "calls": ["search_log"], "forced": false}
+{"t": 53.9432, "kind": "tool", "name": "search_log", "args": {"pattern": "def resolve_path"}, "ms": 0.18, "out_chars": 10}
+{"t": 61.2866, "kind": "llm", "step": 7, "in_tokens": 4262, "out_tokens": 21, "seconds": 1.247, "calls": ["search_log"], "forced": false}
+{"t": 61.2868, "kind": "tool", "name": "search_log", "args": {"pattern": "def resolve_path_parts"}, "ms": 0.03, "out_chars": 10}
+{"t": 72.1875, "kind": "llm", "step": 8, "in_tokens": 4298, "out_tokens": 20, "seconds": 4.648, "calls": ["search_log"], "forced": false}
+{"t": 72.1878, "kind": "tool", "name": "search_log", "args": {"pattern": "def .*path_parts"}, "ms": 0.13, "out_chars": 10}
+{"t": 81.2957, "kind": "llm", "step": 9, "in_tokens": 4333, "out_tokens": 153, "seconds": 6.256, "calls": ["submit_report"], "forced": true}
+{"t": 81.2959, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/urlutils.py", "culprit_function": "resolve_path_parts", "confidence": "high", "evidence": "The change in `boltons/urlutils.py` altered the logic for `resolve_path_parts` by increasing the length threshold to prevent unrooting from `len(ret) > 1` to `len(ret) > 2`. This change causes incorrect URL normalization behavior as shown by the test failures.", "suggested_action": "Revert the change to `boltons/urlutils.py` to restore the previous behavior of path resolution."}}
+{"t": 81.296, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/urlutils.py", "culprit_function": "resolve_path_parts", "confidence": "high", "evidence": "The change in `boltons/urlutils.py` altered the logic for `resolve_path_parts` by increasing the length threshold to prevent unrooting from `len(ret) > 1` to `len(ret) > 2`. This change causes incorrect URL normalization behavior as shown by the test failures.", "suggested_action": "Revert the change to `boltons/urlutils.py` to restore the previous behavior of path resolution."}, "latency_seconds": 39.374}

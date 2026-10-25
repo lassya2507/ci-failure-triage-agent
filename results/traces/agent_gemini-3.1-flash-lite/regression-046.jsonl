@@ -1,0 +1,22 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-046", "system": "agent"}
+{"t": 2.6784, "kind": "llm", "step": 0, "in_tokens": 962, "out_tokens": 18, "seconds": 0.915, "calls": ["read_log"], "forced": false}
+{"t": 2.6787, "kind": "tool", "name": "read_log", "args": {"num_lines": 150}, "ms": 0.05, "out_chars": 1709}
+{"t": 10.323, "kind": "llm", "step": 1, "in_tokens": 1430, "out_tokens": 10, "seconds": 1.059, "calls": ["read_diff"], "forced": false}
+{"t": 10.3232, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 1709}
+{"t": 20.3945, "kind": "llm", "step": 2, "in_tokens": 2025, "out_tokens": 12, "seconds": 3.631, "calls": ["get_changed_functions"], "forced": false}
+{"t": 20.4455, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 50.82, "out_chars": 160}
+{"t": 36.6333, "kind": "llm", "step": 3, "in_tokens": 2106, "out_tokens": 38, "seconds": 12.369, "calls": ["read_file"], "forced": false}
+{"t": 36.6338, "kind": "tool", "name": "read_file", "args": {"path": "boltons/dictutils.py", "start_line": 350, "end_line": 370}, "ms": 0.22, "out_chars": 1038}
+{"t": 83.1405, "kind": "llm", "step": 4, "in_tokens": 2493, "out_tokens": 21, "seconds": 46.506, "calls": ["search_log"], "forced": false}
+{"t": 83.1408, "kind": "tool", "name": "search_log", "args": {"pattern": "URL\\(.*__eq__"}, "ms": 0.13, "out_chars": 10}
+{"t": 88.9042, "kind": "llm", "step": 5, "in_tokens": 2529, "out_tokens": 38, "seconds": 5.763, "calls": ["read_file"], "forced": false}
+{"t": 88.9048, "kind": "tool", "name": "read_file", "args": {"start_line": 350, "end_line": 400, "path": "boltons/urlutils.py"}, "ms": 0.36, "out_chars": 2059}
+{"t": 95.1896, "kind": "llm", "step": 6, "in_tokens": 3312, "out_tokens": 22, "seconds": 4.548, "calls": ["search_log"], "forced": false}
+{"t": 95.1899, "kind": "tool", "name": "search_log", "args": {"pattern": "class URL\\(.*__eq__"}, "ms": 0.14, "out_chars": 10}
+{"t": 99.0622, "kind": "llm", "step": 7, "in_tokens": 3349, "out_tokens": 18, "seconds": 0.921, "calls": ["search_log"], "forced": false}
+{"t": 99.0625, "kind": "tool", "name": "search_log", "args": {"pattern": "class URL\\("}, "ms": 0.17, "out_chars": 10}
+{"t": 106.6576, "kind": "llm", "step": 8, "in_tokens": 3382, "out_tokens": 25, "seconds": 1.016, "calls": ["search_log"], "forced": false}
+{"t": 106.6579, "kind": "tool", "name": "search_log", "args": {"pattern": "def __eq__\\(self, other\\):"}, "ms": 0.12, "out_chars": 10}
+{"t": 116.2256, "kind": "llm", "step": 9, "in_tokens": 3422, "out_tokens": 162, "seconds": 3.084, "calls": ["submit_report"], "forced": true}
+{"t": 116.2258, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/dictutils.py", "culprit_function": "OrderedMultiDict.__eq__", "confidence": "high", "evidence": "The change in boltons/dictutils.py reversed the logic in `OrderedMultiDict.__eq__`, returning `True` when elements differ instead of `False`. This directly causes the observed `AssertionError` where `omd != omd3` evaluated to `False` (because `!=` is now effectively `==`), leading to the test failure.", "suggested_action": "Revert the change in boltons/dictutils.py (change `return True` back to `return False`)."}}
+{"t": 116.2259, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/dictutils.py", "culprit_function": "OrderedMultiDict.__eq__", "confidence": "high", "evidence": "The change in boltons/dictutils.py reversed the logic in `OrderedMultiDict.__eq__`, returning `True` when elements differ instead of `False`. This directly causes the observed `AssertionError` where `omd != omd3` evaluated to `False` (because `!=` is now effectively `==`), leading to the test failure.", "suggested_action": "Revert the change in boltons/dictutils.py (change `return True` back to `return False`)."}, "latency_seconds": 79.871}

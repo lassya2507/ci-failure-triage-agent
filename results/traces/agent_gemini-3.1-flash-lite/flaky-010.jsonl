@@ -1,0 +1,14 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-010", "system": "agent"}
+{"t": 4.9158, "kind": "llm", "step": 0, "in_tokens": 916, "out_tokens": 10, "seconds": 1.384, "calls": ["read_diff"], "forced": false}
+{"t": 4.916, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 362}
+{"t": 11.631, "kind": "llm", "step": 1, "in_tokens": 1066, "out_tokens": 12, "seconds": 0.599, "calls": ["get_changed_functions"], "forced": false}
+{"t": 11.6399, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 8.7, "out_chars": 40}
+{"t": 19.3031, "kind": "llm", "step": 2, "in_tokens": 1108, "out_tokens": 30, "seconds": 0.771, "calls": ["search_log"], "forced": false}
+{"t": 19.3034, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_urlutils.py::test_self_normalize"}, "ms": 0.16, "out_chars": 72}
+{"t": 27.0416, "kind": "llm", "step": 3, "in_tokens": 1178, "out_tokens": 23, "seconds": 1.009, "calls": ["read_log"], "forced": false}
+{"t": 27.0418, "kind": "tool", "name": "read_log", "args": {"start_line": 1, "num_lines": 20}, "ms": 0.03, "out_chars": 1412}
+{"t": 39.1971, "kind": "llm", "step": 4, "in_tokens": 1593, "out_tokens": 31, "seconds": 5.665, "calls": ["read_file"], "forced": false}
+{"t": 39.1976, "kind": "tool", "name": "read_file", "args": {"start_line": 350, "path": "tests/test_urlutils.py"}, "ms": 0.24, "out_chars": 4605}
+{"t": 42.3083, "kind": "llm", "step": 5, "in_tokens": 3547, "out_tokens": 132, "seconds": 1.276, "calls": ["submit_report"], "forced": false}
+{"t": 42.3085, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test test_self_normalize uses random.shuffle on a list of 10 items and then asserts that the index of 0 is less than 7. This assertion fails with probability 0.3 (3/10), making the test inherently flaky. The failure is completely unrelated to the change in boltons/fileutils.py.", "suggested_action": "Remove the random.shuffle assertion in tests/test_urlutils.py as it is not testing URL normalization logic."}}
+{"t": 42.3086, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test test_self_normalize uses random.shuffle on a list of 10 items and then asserts that the index of 0 is less than 7. This assertion fails with probability 0.3 (3/10), making the test inherently flaky. The failure is completely unrelated to the change in boltons/fileutils.py.", "suggested_action": "Remove the random.shuffle assertion in tests/test_urlutils.py as it is not testing URL normalization logic."}, "latency_seconds": 10.717}

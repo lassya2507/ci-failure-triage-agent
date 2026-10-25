@@ -1,0 +1,22 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-002", "system": "agent"}
+{"t": 6.7624, "kind": "llm", "step": 0, "in_tokens": 913, "out_tokens": 10, "seconds": 3.718, "calls": ["read_diff"], "forced": false}
+{"t": 6.7625, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 456}
+{"t": 15.7112, "kind": "llm", "step": 1, "in_tokens": 1076, "out_tokens": 12, "seconds": 5.166, "calls": ["get_changed_functions"], "forced": false}
+{"t": 15.7181, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 6.66, "out_chars": 47}
+{"t": 19.906, "kind": "llm", "step": 2, "in_tokens": 1117, "out_tokens": 10, "seconds": 1.861, "calls": ["read_log"], "forced": false}
+{"t": 19.9062, "kind": "tool", "name": "read_log", "args": {}, "ms": 0.03, "out_chars": 1361}
+{"t": 26.6015, "kind": "llm", "step": 3, "in_tokens": 1480, "out_tokens": 30, "seconds": 1.056, "calls": ["read_file"], "forced": false}
+{"t": 26.6021, "kind": "tool", "name": "read_file", "args": {"start_line": 55, "path": "tests/test_formatutils.py"}, "ms": 0.37, "out_chars": 594}
+{"t": 37.7457, "kind": "llm", "step": 4, "in_tokens": 1778, "out_tokens": 30, "seconds": 4.7, "calls": ["read_file"], "forced": false}
+{"t": 37.7461, "kind": "tool", "name": "read_file", "args": {"path": "boltons/formatutils.py", "start_line": 280}, "ms": 0.19, "out_chars": 3149}
+{"t": 44.3989, "kind": "llm", "step": 5, "in_tokens": 2906, "out_tokens": 18, "seconds": 3.853, "calls": ["search_log"], "forced": false}
+{"t": 44.3992, "kind": "tool", "name": "search_log", "args": {"pattern": "_UNSET"}, "ms": 0.12, "out_chars": 10}
+{"t": 53.0638, "kind": "llm", "step": 6, "in_tokens": 2939, "out_tokens": 29, "seconds": 5.018, "calls": ["read_file"], "forced": false}
+{"t": 53.0641, "kind": "tool", "name": "read_file", "args": {"end_line": 50, "path": "boltons/formatutils.py"}, "ms": 0.1, "out_chars": 2785}
+{"t": 59.5368, "kind": "llm", "step": 7, "in_tokens": 3747, "out_tokens": 19, "seconds": 3.991, "calls": ["search_log"], "forced": false}
+{"t": 59.5371, "kind": "tool", "name": "search_log", "args": {"pattern": "_UNSET ="}, "ms": 0.12, "out_chars": 10}
+{"t": 67.8449, "kind": "llm", "step": 8, "in_tokens": 3781, "out_tokens": 38, "seconds": 4.797, "calls": ["read_file"], "forced": false}
+{"t": 67.8452, "kind": "tool", "name": "read_file", "args": {"start_line": 200, "end_line": 300, "path": "boltons/formatutils.py"}, "ms": 0.13, "out_chars": 4169}
+{"t": 76.7475, "kind": "llm", "step": 9, "in_tokens": 5340, "out_tokens": 175, "seconds": 6.2, "calls": ["submit_report"], "forced": true}
+{"t": 76.7477, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/formatutils.py", "culprit_function": "DeferredValue.get_value", "confidence": "high", "evidence": "The change in `get_value` from `and` to `or` incorrectly allows the function to return an uninitialized `self._value` (`_UNSET`) if `cache_value` is set to `True`, instead of calling the user-provided function. This results in the `DeferredValue` returning an `object()` instead of the actual computed value, causing the test failure.", "suggested_action": "Revert the condition in `get_value` back to `if self._value is not _UNSET and self.cache_value:`."}}
+{"t": 76.7479, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/formatutils.py", "culprit_function": "DeferredValue.get_value", "confidence": "high", "evidence": "The change in `get_value` from `and` to `or` incorrectly allows the function to return an uninitialized `self._value` (`_UNSET`) if `cache_value` is set to `True`, instead of calling the user-provided function. This results in the `DeferredValue` returning an `object()` instead of the actual computed value, causing the test failure.", "suggested_action": "Revert the condition in `get_value` back to `if self._value is not _UNSET and self.cache_value:`."}, "latency_seconds": 40.377}

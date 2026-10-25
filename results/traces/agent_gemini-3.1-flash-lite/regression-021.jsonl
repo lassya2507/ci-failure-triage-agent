@@ -1,0 +1,22 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-021", "system": "agent"}
+{"t": 12.6015, "kind": "llm", "step": 0, "in_tokens": 1074, "out_tokens": 10, "seconds": 6.508, "calls": ["read_diff"], "forced": false}
+{"t": 12.6017, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 795}
+{"t": 14.5901, "kind": "llm", "step": 1, "in_tokens": 1378, "out_tokens": 12, "seconds": 0.997, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.6104, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 20.1, "out_chars": 90}
+{"t": 22.0548, "kind": "llm", "step": 2, "in_tokens": 1434, "out_tokens": 31, "seconds": 0.961, "calls": ["read_file"], "forced": false}
+{"t": 22.0552, "kind": "tool", "name": "read_file", "args": {"path": "boltons/strutils.py", "start_line": 1200}, "ms": 0.3, "out_chars": 3668}
+{"t": 30.1561, "kind": "llm", "step": 3, "in_tokens": 2962, "out_tokens": 17, "seconds": 1.562, "calls": ["search_log"], "forced": false}
+{"t": 30.1564, "kind": "tool", "name": "search_log", "args": {"pattern": "IndexError"}, "ms": 0.16, "out_chars": 335}
+{"t": 37.3112, "kind": "llm", "step": 4, "in_tokens": 3096, "out_tokens": 23, "seconds": 1.217, "calls": ["read_log"], "forced": false}
+{"t": 37.3114, "kind": "tool", "name": "read_log", "args": {"num_lines": 50, "start_line": 1}, "ms": 0.06, "out_chars": 3081}
+{"t": 44.7057, "kind": "llm", "step": 5, "in_tokens": 4066, "out_tokens": 40, "seconds": 1.112, "calls": ["read_file"], "forced": false}
+{"t": 44.7061, "kind": "tool", "name": "read_file", "args": {"end_line": 1220, "path": "boltons/strutils.py", "start_line": 1200}, "ms": 0.27, "out_chars": 874}
+{"t": 52.0765, "kind": "llm", "step": 6, "in_tokens": 4455, "out_tokens": 40, "seconds": 0.982, "calls": ["read_file"], "forced": false}
+{"t": 52.077, "kind": "tool", "name": "read_file", "args": {"path": "boltons/strutils.py", "end_line": 1220, "start_line": 1200}, "ms": 0.26, "out_chars": 874}
+{"t": 59.5998, "kind": "llm", "step": 7, "in_tokens": 4844, "out_tokens": 28, "seconds": 1.005, "calls": ["read_file"], "forced": false}
+{"t": 59.6005, "kind": "tool", "name": "read_file", "args": {"start_line": 1, "path": "boltons/strutils.py"}, "ms": 0.46, "out_chars": 4620}
+{"t": 67.0459, "kind": "llm", "step": 8, "in_tokens": 6332, "out_tokens": 17, "seconds": 0.951, "calls": ["search_log"], "forced": false}
+{"t": 67.0462, "kind": "tool", "name": "search_log", "args": {"pattern": "MultiReplace"}, "ms": 0.14, "out_chars": 1617}
+{"t": 79.2516, "kind": "llm", "step": 9, "in_tokens": 6873, "out_tokens": 184, "seconds": 5.657, "calls": ["submit_report"], "forced": true}
+{"t": 79.2519, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/strutils.py", "culprit_function": "MultiReplace.__init__", "confidence": "high", "evidence": "The change in `MultiReplace.__init__` modified the `self.group_map` assignment to access `vals[2]`, but `vals` comes from `sub_map`, which often contains only two items (key-value pairs) in the provided test cases. This causes an `IndexError` when accessing the non-existent index 2. This broke `MultiReplace` usage across the test suite.", "suggested_action": "Revert the change to `vals[2]` back to `vals[1]` in `boltons/strutils.py` to restore the correct replacement value access."}}
+{"t": 79.252, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/strutils.py", "culprit_function": "MultiReplace.__init__", "confidence": "high", "evidence": "The change in `MultiReplace.__init__` modified the `self.group_map` assignment to access `vals[2]`, but `vals` comes from `sub_map`, which often contains only two items (key-value pairs) in the provided test cases. This causes an `IndexError` when accessing the non-existent index 2. This broke `MultiReplace` usage across the test suite.", "suggested_action": "Revert the change to `vals[2]` back to `vals[1]` in `boltons/strutils.py` to restore the correct replacement value access."}, "latency_seconds": 20.982}

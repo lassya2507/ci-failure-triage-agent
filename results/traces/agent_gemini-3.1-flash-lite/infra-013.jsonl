@@ -1,0 +1,12 @@
+{"t": 0.0, "kind": "case_start", "case": "infra-013", "system": "agent"}
+{"t": 1.0709, "kind": "llm", "step": 0, "in_tokens": 1218, "out_tokens": 10, "seconds": 1.07, "calls": ["read_diff"], "forced": false}
+{"t": 1.0711, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 592}
+{"t": 8.2177, "kind": "llm", "step": 1, "in_tokens": 1393, "out_tokens": 12, "seconds": 0.717, "calls": ["get_changed_functions"], "forced": false}
+{"t": 8.2271, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 9.21, "out_chars": 47}
+{"t": 15.8594, "kind": "llm", "step": 2, "in_tokens": 1435, "out_tokens": 17, "seconds": 0.858, "calls": ["read_log"], "forced": false}
+{"t": 15.8596, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.08, "out_chars": 3228}
+{"t": 23.8429, "kind": "llm", "step": 3, "in_tokens": 2511, "out_tokens": 17, "seconds": 1.342, "calls": ["search_log"], "forced": false}
+{"t": 23.8433, "kind": "tool", "name": "search_log", "args": {"pattern": "sitecustomize"}, "ms": 0.23, "out_chars": 815}
+{"t": 33.7157, "kind": "llm", "step": 4, "in_tokens": 2870, "out_tokens": 130, "seconds": 3.714, "calls": ["submit_report"], "forced": false}
+{"t": 33.7159, "kind": "submit", "ok": true, "report": {"category": "infra", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The tests are failing with 'OSError: [Errno 24] Too many open files'. The traceback indicates this is happening inside a custom 'sitecustomize.py' file provided by the CI runner environment, which appears to be intercepting socket creation. This is an environment issue unrelated to the actual code changes in 'boltons/tbutils.py'.", "suggested_action": "Investigate the CI runner's file descriptor limits or the custom 'sitecustomize.py' configuration."}}
+{"t": 33.7161, "kind": "case_end", "report": {"category": "infra", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The tests are failing with 'OSError: [Errno 24] Too many open files'. The traceback indicates this is happening inside a custom 'sitecustomize.py' file provided by the CI runner environment, which appears to be intercepting socket creation. This is an environment issue unrelated to the actual code changes in 'boltons/tbutils.py'.", "suggested_action": "Investigate the CI runner's file descriptor limits or the custom 'sitecustomize.py' configuration."}, "latency_seconds": 7.715}

@@ -1,0 +1,18 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-032", "system": "agent"}
+{"t": 9.5454, "kind": "llm", "step": 0, "in_tokens": 1000, "out_tokens": 10, "seconds": 5.939, "calls": ["read_diff"], "forced": false}
+{"t": 9.5456, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 438}
+{"t": 12.2612, "kind": "llm", "step": 1, "in_tokens": 1188, "out_tokens": 12, "seconds": 1.155, "calls": ["get_changed_functions"], "forced": false}
+{"t": 12.2678, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 6.33, "out_chars": 36}
+{"t": 22.0808, "kind": "llm", "step": 2, "in_tokens": 1229, "out_tokens": 23, "seconds": 3.474, "calls": ["search_log"], "forced": false}
+{"t": 22.0812, "kind": "tool", "name": "search_log", "args": {"pattern": "IndexError: tuple index out of range"}, "ms": 0.21, "out_chars": 367}
+{"t": 26.9343, "kind": "llm", "step": 3, "in_tokens": 1381, "out_tokens": 23, "seconds": 0.828, "calls": ["read_log"], "forced": false}
+{"t": 26.9345, "kind": "tool", "name": "read_log", "args": {"num_lines": 20, "start_line": 1}, "ms": 0.04, "out_chars": 1360}
+{"t": 41.9359, "kind": "llm", "step": 4, "in_tokens": 1747, "out_tokens": 23, "seconds": 8.329, "calls": ["read_file"], "forced": false}
+{"t": 41.9362, "kind": "tool", "name": "read_file", "args": {"path": "boltons/ecoutils.py"}, "ms": 0.14, "out_chars": 4780}
+{"t": 42.8349, "kind": "llm", "step": 5, "in_tokens": 3253, "out_tokens": 31, "seconds": 0.898, "calls": ["read_file"], "forced": false}
+{"t": 42.8353, "kind": "tool", "name": "read_file", "args": {"start_line": 260, "path": "boltons/ecoutils.py"}, "ms": 0.23, "out_chars": 4343}
+{"t": 53.0454, "kind": "llm", "step": 6, "in_tokens": 4839, "out_tokens": 17, "seconds": 3.609, "calls": ["search_log"], "forced": false}
+{"t": 53.0457, "kind": "tool", "name": "search_log", "args": {"pattern": "IndexError"}, "ms": 0.05, "out_chars": 455}
+{"t": 60.5901, "kind": "llm", "step": 7, "in_tokens": 5019, "out_tokens": 178, "seconds": 3.653, "calls": ["submit_report"], "forced": false}
+{"t": 60.5903, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/ecoutils.py", "culprit_function": "get_python_info", "confidence": "high", "evidence": "The code changed `platform.python_build()[1]` to `platform.python_build()[2]`. The `platform.python_build()` function returns a tuple of length 2 (version string and build date string), so accessing index 2 causes an `IndexError`. The original code `[1]` was correct as it accessed the second element (the build date string).", "suggested_action": "Revert the change in boltons/ecoutils.py from `platform.python_build()[2]` back to `platform.python_build()[1]`."}}
+{"t": 60.5905, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/ecoutils.py", "culprit_function": "get_python_info", "confidence": "high", "evidence": "The code changed `platform.python_build()[1]` to `platform.python_build()[2]`. The `platform.python_build()` function returns a tuple of length 2 (version string and build date string), so accessing index 2 causes an `IndexError`. The original code `[1]` was correct as it accessed the second element (the build date string).", "suggested_action": "Revert the change in boltons/ecoutils.py from `platform.python_build()[2]` back to `platform.python_build()[1]`."}, "latency_seconds": 27.899}

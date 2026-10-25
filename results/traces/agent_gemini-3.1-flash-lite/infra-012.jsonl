@@ -1,0 +1,10 @@
+{"t": 0.0, "kind": "case_start", "case": "infra-012", "system": "agent"}
+{"t": 4.1775, "kind": "llm", "step": 0, "in_tokens": 1218, "out_tokens": 10, "seconds": 1.202, "calls": ["read_diff"], "forced": false}
+{"t": 4.1777, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 462}
+{"t": 16.5253, "kind": "llm", "step": 1, "in_tokens": 1405, "out_tokens": 17, "seconds": 6.05, "calls": ["read_log"], "forced": false}
+{"t": 16.5255, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.08, "out_chars": 3228}
+{"t": 19.0689, "kind": "llm", "step": 2, "in_tokens": 2481, "out_tokens": 12, "seconds": 1.094, "calls": ["get_changed_functions"], "forced": false}
+{"t": 19.0815, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 12.29, "out_chars": 30}
+{"t": 33.2775, "kind": "llm", "step": 3, "in_tokens": 2518, "out_tokens": 127, "seconds": 7.802, "calls": ["submit_report"], "forced": false}
+{"t": 33.2777, "kind": "submit", "ok": true, "report": {"category": "infra", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The CI tests failed with 'OSError: [Errno 24] Too many open files'. This is a system-level resource limit (EMFILE) error, likely due to a leak in the test suite or a constrained environment, and is entirely unrelated to the change in boltons/strutils.py.", "suggested_action": "The CI infrastructure or test suite setup needs to be investigated for file descriptor leaks; the library change is unrelated to socket or async operations."}}
+{"t": 33.2778, "kind": "case_end", "report": {"category": "infra", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The CI tests failed with 'OSError: [Errno 24] Too many open files'. This is a system-level resource limit (EMFILE) error, likely due to a leak in the test suite or a constrained environment, and is entirely unrelated to the change in boltons/strutils.py.", "suggested_action": "The CI infrastructure or test suite setup needs to be investigated for file descriptor leaks; the library change is unrelated to socket or async operations."}, "latency_seconds": 16.164}

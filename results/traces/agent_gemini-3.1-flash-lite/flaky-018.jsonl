@@ -1,0 +1,14 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-018", "system": "agent"}
+{"t": 8.817, "kind": "llm", "step": 0, "in_tokens": 915, "out_tokens": 10, "seconds": 2.616, "calls": ["read_diff"], "forced": false}
+{"t": 8.8171, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 327}
+{"t": 14.4174, "kind": "llm", "step": 1, "in_tokens": 1060, "out_tokens": 12, "seconds": 0.717, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.4214, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 3.82, "out_chars": 30}
+{"t": 22.1618, "kind": "llm", "step": 2, "in_tokens": 1100, "out_tokens": 18, "seconds": 0.961, "calls": ["search_log"], "forced": false}
+{"t": 22.1621, "kind": "tool", "name": "search_log", "args": {"pattern": "test_props"}, "ms": 0.12, "out_chars": 205}
+{"t": 29.714, "kind": "llm", "step": 3, "in_tokens": 1193, "out_tokens": 30, "seconds": 1.013, "calls": ["read_file"], "forced": false}
+{"t": 29.7143, "kind": "tool", "name": "read_file", "args": {"start_line": 70, "path": "tests/test_socketutils.py"}, "ms": 0.13, "out_chars": 2867}
+{"t": 37.2006, "kind": "llm", "step": 4, "in_tokens": 2449, "out_tokens": 30, "seconds": 0.999, "calls": ["rerun_test"], "forced": false}
+{"t": 37.2008, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_socketutils.py::test_props"}, "ms": 0.01, "out_chars": 422}
+{"t": 48.685, "kind": "llm", "step": 5, "in_tokens": 2659, "out_tokens": 149, "seconds": 4.984, "calls": ["submit_report"], "forced": false}
+{"t": 48.6852, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The failing test 'test_props' uses random.shuffle on a list of numbers and asserts that the index of '0' is less than 7. This assertion is non-deterministic because '0' can end up at index 7, 8, or 9, as confirmed by the rerun failure showing 'assert 7 < 7'. The change to 'boltons/ecoutils.py' is unrelated to this test.", "suggested_action": "Update the test to either not rely on random ordering for its assertion or use a fixed seed/deterministic input."}}
+{"t": 48.6854, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The failing test 'test_props' uses random.shuffle on a list of numbers and asserts that the index of '0' is less than 7. This assertion is non-deterministic because '0' can end up at index 7, 8, or 9, as confirmed by the rerun failure showing 'assert 7 < 7'. The change to 'boltons/ecoutils.py' is unrelated to this test.", "suggested_action": "Update the test to either not rely on random ordering for its assertion or use a fixed seed/deterministic input."}, "latency_seconds": 11.625}

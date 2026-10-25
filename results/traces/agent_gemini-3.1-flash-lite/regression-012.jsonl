@@ -1,0 +1,10 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-012", "system": "agent"}
+{"t": 54.6719, "kind": "llm", "step": 0, "in_tokens": 1024, "out_tokens": 10, "seconds": 49.416, "calls": ["read_diff"], "forced": false}
+{"t": 54.6721, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1662}
+{"t": 60.8052, "kind": "llm", "step": 1, "in_tokens": 1622, "out_tokens": 23, "seconds": 6.133, "calls": ["read_log"], "forced": false}
+{"t": 60.8054, "kind": "tool", "name": "read_log", "args": {"start_line": 1, "num_lines": 20}, "ms": 0.04, "out_chars": 1360}
+{"t": 70.1531, "kind": "llm", "step": 2, "in_tokens": 1988, "out_tokens": 31, "seconds": 7.981, "calls": ["read_file"], "forced": false}
+{"t": 70.1534, "kind": "tool", "name": "read_file", "args": {"start_line": 260, "path": "boltons/ecoutils.py"}, "ms": 0.14, "out_chars": 4343}
+{"t": 71.4004, "kind": "llm", "step": 3, "in_tokens": 3574, "out_tokens": 154, "seconds": 1.247, "calls": ["submit_report"], "forced": false}
+{"t": 71.432, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/ecoutils.py", "culprit_function": "get_python_info", "confidence": "high", "evidence": "The `get_python_info` function was changed to access `platform.python_build()[2]`. The `platform.python_build()` function returns a tuple of length 2, so accessing index 2 causes an `IndexError`. The previous code accessed index 1, which is correct for that function.", "suggested_action": "Revert the index change in `boltons/ecoutils.py` from 2 back to 1."}}
+{"t": 71.4323, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/ecoutils.py", "culprit_function": "get_python_info", "confidence": "high", "evidence": "The `get_python_info` function was changed to access `platform.python_build()[2]`. The `platform.python_build()` function returns a tuple of length 2, so accessing index 2 causes an `IndexError`. The previous code accessed index 1, which is correct for that function.", "suggested_action": "Revert the index change in `boltons/ecoutils.py` from 2 back to 1."}, "latency_seconds": 64.811}

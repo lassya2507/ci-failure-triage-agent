@@ -1,0 +1,14 @@
+{"t": 0.0, "kind": "case_start", "case": "infra-008", "system": "agent"}
+{"t": 3.0766, "kind": "llm", "step": 0, "in_tokens": 1218, "out_tokens": 10, "seconds": 0.901, "calls": ["read_diff"], "forced": false}
+{"t": 3.0768, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 331}
+{"t": 11.3426, "kind": "llm", "step": 1, "in_tokens": 1352, "out_tokens": 12, "seconds": 1.667, "calls": ["get_changed_functions"], "forced": false}
+{"t": 11.3669, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 24.04, "out_chars": 32}
+{"t": 18.1994, "kind": "llm", "step": 2, "in_tokens": 1390, "out_tokens": 25, "seconds": 1.023, "calls": ["search_log"], "forced": false}
+{"t": 18.1997, "kind": "tool", "name": "search_log", "args": {"pattern": "OSError: \\[Errno 24\\]"}, "ms": 0.12, "out_chars": 1139}
+{"t": 26.2193, "kind": "llm", "step": 3, "in_tokens": 1894, "out_tokens": 23, "seconds": 1.543, "calls": ["read_log"], "forced": false}
+{"t": 26.2196, "kind": "tool", "name": "read_log", "args": {"start_line": 1, "num_lines": 20}, "ms": 0.14, "out_chars": 1441}
+{"t": 33.4447, "kind": "llm", "step": 4, "in_tokens": 2320, "out_tokens": 19, "seconds": 1.268, "calls": ["search_log"], "forced": false}
+{"t": 33.4451, "kind": "tool", "name": "search_log", "args": {"pattern": "Too many open files"}, "ms": 0.23, "out_chars": 611}
+{"t": 40.8809, "kind": "llm", "step": 5, "in_tokens": 2609, "out_tokens": 103, "seconds": 1.204, "calls": ["submit_report"], "forced": false}
+{"t": 40.8811, "kind": "submit", "ok": true, "report": {"category": "infra", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test failures are all due to `OSError: [Errno 24] Too many open files`, which is a system-level resource limit (ulimit) issue. The changes in `boltons/iterutils.py` are unrelated to socket or file descriptor management.", "suggested_action": "Increase the file descriptor limit for the CI runner."}}
+{"t": 40.8813, "kind": "case_end", "report": {"category": "infra", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test failures are all due to `OSError: [Errno 24] Too many open files`, which is a system-level resource limit (ulimit) issue. The changes in `boltons/iterutils.py` are unrelated to socket or file descriptor management.", "suggested_action": "Increase the file descriptor limit for the CI runner."}, "latency_seconds": 7.637}

@@ -1,0 +1,14 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-026", "system": "agent"}
+{"t": 6.6168, "kind": "llm", "step": 0, "in_tokens": 942, "out_tokens": 19, "seconds": 0.689, "calls": ["search_log"], "forced": false}
+{"t": 6.6171, "kind": "tool", "name": "search_log", "args": {"pattern": "test_fileperms"}, "ms": 0.13, "out_chars": 228}
+{"t": 16.4928, "kind": "llm", "step": 1, "in_tokens": 1040, "out_tokens": 23, "seconds": 3.065, "calls": ["read_file"], "forced": false}
+{"t": 16.4932, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_fileutils.py"}, "ms": 0.3, "out_chars": 3720}
+{"t": 22.1728, "kind": "llm", "step": 2, "in_tokens": 2574, "out_tokens": 10, "seconds": 1.245, "calls": ["read_diff"], "forced": false}
+{"t": 22.1731, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1445}
+{"t": 32.9869, "kind": "llm", "step": 3, "in_tokens": 3094, "out_tokens": 30, "seconds": 4.559, "calls": ["read_file"], "forced": false}
+{"t": 32.9872, "kind": "tool", "name": "read_file", "args": {"path": "boltons/fileutils.py", "start_line": 140}, "ms": 0.2, "out_chars": 3859}
+{"t": 36.9653, "kind": "llm", "step": 4, "in_tokens": 4647, "out_tokens": 17, "seconds": 1.037, "calls": ["search_log"], "forced": false}
+{"t": 36.9656, "kind": "tool", "name": "search_log", "args": {"pattern": "AssertionError"}, "ms": 0.18, "out_chars": 141}
+{"t": 45.0038, "kind": "llm", "step": 5, "in_tokens": 4733, "out_tokens": 175, "seconds": 1.576, "calls": ["submit_report"], "forced": false}
+{"t": 45.0304, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/fileutils.py", "culprit_function": "_FilePermProperty._update_integer", "confidence": "high", "evidence": "The change in boltons/fileutils.py incorrectly updated the bit shifting logic for file permissions by changing the multiplier from 3 to 4, which broke FilePerms' integer representation. The test `tests/test_fileutils.py::test_fileperms` expects octal `0o770` but gets `0o3560` because of this change.", "suggested_action": "Revert the change in boltons/fileutils.py back to using `(self.offset * 3)` for bit shifting."}}
+{"t": 45.0307, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/fileutils.py", "culprit_function": "_FilePermProperty._update_integer", "confidence": "high", "evidence": "The change in boltons/fileutils.py incorrectly updated the bit shifting logic for file permissions by changing the multiplier from 3 to 4, which broke FilePerms' integer representation. The test `tests/test_fileutils.py::test_fileperms` expects octal `0o770` but gets `0o3560` because of this change.", "suggested_action": "Revert the change in boltons/fileutils.py back to using `(self.offset * 3)` for bit shifting."}, "latency_seconds": 12.203}

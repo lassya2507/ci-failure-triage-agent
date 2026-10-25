@@ -1,0 +1,14 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-009", "system": "agent"}
+{"t": 9.4393, "kind": "llm", "step": 0, "in_tokens": 917, "out_tokens": 10, "seconds": 6.188, "calls": ["read_diff"], "forced": false}
+{"t": 9.4395, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 404}
+{"t": 11.712, "kind": "llm", "step": 1, "in_tokens": 1062, "out_tokens": 29, "seconds": 0.961, "calls": ["search_log"], "forced": false}
+{"t": 11.7123, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_urlutils.py::test_userinfo"}, "ms": 0.18, "out_chars": 68}
+{"t": 18.9524, "kind": "llm", "step": 2, "in_tokens": 1132, "out_tokens": 23, "seconds": 0.701, "calls": ["read_log"], "forced": false}
+{"t": 18.9526, "kind": "tool", "name": "read_log", "args": {"num_lines": 20, "start_line": 1}, "ms": 0.03, "out_chars": 1210}
+{"t": 26.5484, "kind": "llm", "step": 3, "in_tokens": 1451, "out_tokens": 39, "seconds": 0.797, "calls": ["read_file"], "forced": false}
+{"t": 26.5488, "kind": "tool", "name": "read_file", "args": {"end_line": 210, "path": "tests/test_urlutils.py", "start_line": 190}, "ms": 0.19, "out_chars": 907}
+{"t": 34.2229, "kind": "llm", "step": 4, "in_tokens": 1864, "out_tokens": 31, "seconds": 0.971, "calls": ["rerun_test"], "forced": false}
+{"t": 34.2231, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_urlutils.py::test_userinfo"}, "ms": 0.01, "out_chars": 161}
+{"t": 44.7079, "kind": "llm", "step": 5, "in_tokens": 1955, "out_tokens": 108, "seconds": 3.956, "calls": ["submit_report"], "forced": false}
+{"t": 44.7187, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_userinfo` failed due to a random sample comparison, which is inherently nondeterministic. The test passed upon rerun. The changes in `boltons/funcutils.py` are unrelated to this test.", "suggested_action": "None, the test is flaky and was already addressed by a rerun. Consider fixing the test to not rely on random values."}}
+{"t": 44.7191, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_userinfo` failed due to a random sample comparison, which is inherently nondeterministic. The test passed upon rerun. The changes in `boltons/funcutils.py` are unrelated to this test.", "suggested_action": "None, the test is flaky and was already addressed by a rerun. Consider fixing the test to not rely on random values."}, "latency_seconds": 13.961}

@@ -1,0 +1,12 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-052", "system": "agent"}
+{"t": 8.8175, "kind": "llm", "step": 0, "in_tokens": 1017, "out_tokens": 10, "seconds": 3.129, "calls": ["read_diff"], "forced": false}
+{"t": 8.8177, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1483}
+{"t": 18.009, "kind": "llm", "step": 1, "in_tokens": 1540, "out_tokens": 12, "seconds": 4.821, "calls": ["get_changed_functions"], "forced": false}
+{"t": 18.025, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 15.81, "out_chars": 150}
+{"t": 40.026, "kind": "llm", "step": 2, "in_tokens": 1618, "out_tokens": 17, "seconds": 19.337, "calls": ["read_log"], "forced": false}
+{"t": 40.0263, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.06, "out_chars": 3014}
+{"t": 42.5432, "kind": "llm", "step": 3, "in_tokens": 2559, "out_tokens": 39, "seconds": 2.517, "calls": ["read_file"], "forced": false}
+{"t": 42.5435, "kind": "tool", "name": "read_file", "args": {"path": "boltons/ecoutils.py", "start_line": 260, "end_line": 280}, "ms": 0.09, "out_chars": 995}
+{"t": 67.5938, "kind": "llm", "step": 4, "in_tokens": 2965, "out_tokens": 154, "seconds": 20.067, "calls": ["submit_report"], "forced": false}
+{"t": 67.5941, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/ecoutils.py", "culprit_function": "get_python_info", "confidence": "high", "evidence": "The diff modified line 272 of boltons/ecoutils.py to access index 2 of `platform.python_build()`, which is a tuple that only contains 2 elements (index 0 and 1). This causes an IndexError. It should have remained at index 1 as it was originally.", "suggested_action": "Revert the change in boltons/ecoutils.py to use index 1 instead of 2."}}
+{"t": 67.5942, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/ecoutils.py", "culprit_function": "get_python_info", "confidence": "high", "evidence": "The diff modified line 272 of boltons/ecoutils.py to access index 2 of `platform.python_build()`, which is a tuple that only contains 2 elements (index 0 and 1). This causes an IndexError. It should have remained at index 1 as it was originally.", "suggested_action": "Revert the change in boltons/ecoutils.py to use index 1 instead of 2."}, "latency_seconds": 49.89}

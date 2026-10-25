@@ -1,0 +1,14 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-014", "system": "agent"}
+{"t": 12.4163, "kind": "llm", "step": 0, "in_tokens": 915, "out_tokens": 10, "seconds": 6.09, "calls": ["read_diff"], "forced": false}
+{"t": 12.4165, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 349}
+{"t": 19.5941, "kind": "llm", "step": 1, "in_tokens": 1059, "out_tokens": 12, "seconds": 5.768, "calls": ["get_changed_functions"], "forced": false}
+{"t": 19.5974, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 3.14, "out_chars": 35}
+{"t": 27.7956, "kind": "llm", "step": 2, "in_tokens": 1099, "out_tokens": 17, "seconds": 6.469, "calls": ["read_log"], "forced": false}
+{"t": 27.7958, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.03, "out_chars": 1542}
+{"t": 33.3048, "kind": "llm", "step": 3, "in_tokens": 1531, "out_tokens": 38, "seconds": 4.478, "calls": ["read_file"], "forced": false}
+{"t": 33.3051, "kind": "tool", "name": "read_file", "args": {"start_line": 235, "end_line": 250, "path": "boltons/mathutils.py"}, "ms": 0.11, "out_chars": 516}
+{"t": 56.5439, "kind": "llm", "step": 4, "in_tokens": 1790, "out_tokens": 38, "seconds": 20.217, "calls": ["read_file"], "forced": false}
+{"t": 56.5444, "kind": "tool", "name": "read_file", "args": {"start_line": 95, "end_line": 110, "path": "tests/test_mathutils.py"}, "ms": 0.28, "out_chars": 704}
+{"t": 73.4421, "kind": "llm", "step": 5, "in_tokens": 2165, "out_tokens": 173, "seconds": 16.897, "calls": ["submit_report"], "forced": false}
+{"t": 73.4423, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/mathutils.py", "culprit_function": "Bits.from_hex", "confidence": "high", "evidence": "The change to `Bits.from_hex` incorrectly prepends '0x' to strings that already start with '0x', resulting in '0x0x...' which causes subsequent parsing (via int(val, 2)) to fail because it is not a valid binary string. The previous code correctly checked for the absence of '0x' before prepending.", "suggested_action": "Revert the condition in `Bits.from_hex` to `if not hex.startswith('0x'):` to only prepend '0x' when missing."}}
+{"t": 73.4424, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/mathutils.py", "culprit_function": "Bits.from_hex", "confidence": "high", "evidence": "The change to `Bits.from_hex` incorrectly prepends '0x' to strings that already start with '0x', resulting in '0x0x...' which causes subsequent parsing (via int(val, 2)) to fail because it is not a valid binary string. The previous code correctly checked for the absence of '0x' before prepending.", "suggested_action": "Revert the condition in `Bits.from_hex` to `if not hex.startswith('0x'):` to only prepend '0x' when missing."}, "latency_seconds": 59.929}

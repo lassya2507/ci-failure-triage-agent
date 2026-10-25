@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-015", "system": "agent"}
+{"t": 6.8545, "kind": "llm", "step": 0, "in_tokens": 927, "out_tokens": 10, "seconds": 0.803, "calls": ["read_diff"], "forced": false}
+{"t": 6.8548, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 698}
+{"t": 14.4709, "kind": "llm", "step": 1, "in_tokens": 1193, "out_tokens": 12, "seconds": 0.919, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.4782, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 7.16, "out_chars": 80}
+{"t": 21.8704, "kind": "llm", "step": 2, "in_tokens": 1249, "out_tokens": 32, "seconds": 0.819, "calls": ["search_log"], "forced": false}
+{"t": 21.8708, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_debugutils_trace.py::test_trace_bytes"}, "ms": 0.22, "out_chars": 78}
+{"t": 29.3383, "kind": "llm", "step": 3, "in_tokens": 1324, "out_tokens": 23, "seconds": 0.786, "calls": ["read_log"], "forced": false}
+{"t": 29.3385, "kind": "tool", "name": "read_log", "args": {"num_lines": 20, "start_line": 1}, "ms": 0.03, "out_chars": 1229}
+{"t": 36.8692, "kind": "llm", "step": 4, "in_tokens": 1646, "out_tokens": 25, "seconds": 0.817, "calls": ["read_file"], "forced": false}
+{"t": 36.8694, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_debugutils_trace.py"}, "ms": 0.08, "out_chars": 2485}
+{"t": 44.4191, "kind": "llm", "step": 5, "in_tokens": 2643, "out_tokens": 34, "seconds": 0.867, "calls": ["rerun_test"], "forced": false}
+{"t": 44.4193, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_debugutils_trace.py::test_trace_bytes"}, "ms": 0.01, "out_chars": 351}
+{"t": 56.356, "kind": "llm", "step": 6, "in_tokens": 2809, "out_tokens": 144, "seconds": 5.304, "calls": ["submit_report"], "forced": false}
+{"t": 56.3562, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `tests/test_debugutils_trace.py::test_trace_bytes` uses `random.sample` to generate two numbers and asserts that the first is less than the second without sorting, leading to nondeterministic failures. This failure is unrelated to the changes made to `boltons/gcutils.py` or `boltons/timeutils.py`.", "suggested_action": "The test should either sort the sample or use a different method to ensure the assertion `sample[0] < sample[1]` is always true."}}
+{"t": 56.3564, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `tests/test_debugutils_trace.py::test_trace_bytes` uses `random.sample` to generate two numbers and asserts that the first is less than the second without sorting, leading to nondeterministic failures. This failure is unrelated to the changes made to `boltons/gcutils.py` or `boltons/timeutils.py`.", "suggested_action": "The test should either sort the sample or use a different method to ensure the assertion `sample[0] < sample[1]` is always true."}, "latency_seconds": 10.638}

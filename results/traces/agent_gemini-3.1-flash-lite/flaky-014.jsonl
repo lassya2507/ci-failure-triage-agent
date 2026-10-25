@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-014", "system": "agent"}
+{"t": 7.03, "kind": "llm", "step": 0, "in_tokens": 919, "out_tokens": 10, "seconds": 0.936, "calls": ["read_diff"], "forced": false}
+{"t": 7.0302, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 364}
+{"t": 14.8212, "kind": "llm", "step": 1, "in_tokens": 1062, "out_tokens": 12, "seconds": 1.227, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.8247, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 3.28, "out_chars": 32}
+{"t": 22.133, "kind": "llm", "step": 2, "in_tokens": 1099, "out_tokens": 21, "seconds": 1.038, "calls": ["search_log"], "forced": false}
+{"t": 22.1333, "kind": "tool", "name": "search_log", "args": {"pattern": "test_trace_namedtuple"}, "ms": 0.13, "out_chars": 237}
+{"t": 29.6128, "kind": "llm", "step": 3, "in_tokens": 1206, "out_tokens": 39, "seconds": 1.018, "calls": ["read_file"], "forced": false}
+{"t": 29.613, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_debugutils_trace.py", "end_line": 80, "start_line": 60}, "ms": 0.05, "out_chars": 642}
+{"t": 39.491, "kind": "llm", "step": 4, "in_tokens": 1523, "out_tokens": 39, "seconds": 3.396, "calls": ["read_file"], "forced": false}
+{"t": 39.4913, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_debugutils_trace.py", "start_line": 66, "end_line": 72}, "ms": 0.05, "out_chars": 309}
+{"t": 44.9354, "kind": "llm", "step": 5, "in_tokens": 1695, "out_tokens": 23, "seconds": 1.34, "calls": ["read_log"], "forced": false}
+{"t": 44.9357, "kind": "tool", "name": "read_log", "args": {"num_lines": 20, "start_line": 1}, "ms": 0.04, "out_chars": 1431}
+{"t": 52.5431, "kind": "llm", "step": 6, "in_tokens": 2111, "out_tokens": 155, "seconds": 1.448, "calls": ["submit_report"], "forced": false}
+{"t": 52.5433, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test failure occurs at line 70 of `tests/test_debugutils_trace.py`, where a random shuffle is performed on a list of 10 items, and it is asserted that the index of the element '0' is less than 7. This is a probabilistic test that fails when '0' ends up at index 7, 8, or 9, which is unrelated to the changes made in `boltons/namedutils.py`.", "suggested_action": "The test should be updated to be deterministic or use a wider margin/seed to avoid flakiness."}}
+{"t": 52.5435, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test failure occurs at line 70 of `tests/test_debugutils_trace.py`, where a random shuffle is performed on a list of 10 items, and it is asserted that the index of the element '0' is less than 7. This is a probabilistic test that fails when '0' ends up at index 7, 8, or 9, which is unrelated to the changes made in `boltons/namedutils.py`.", "suggested_action": "The test should be updated to be deterministic or use a wider margin/seed to avoid flakiness."}, "latency_seconds": 10.411}

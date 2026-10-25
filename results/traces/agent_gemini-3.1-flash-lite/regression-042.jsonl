@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-042", "system": "agent"}
+{"t": 0.9113, "kind": "llm", "step": 0, "in_tokens": 961, "out_tokens": 10, "seconds": 0.911, "calls": ["read_diff"], "forced": false}
+{"t": 0.9115, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 1325}
+{"t": 12.7892, "kind": "llm", "step": 1, "in_tokens": 1436, "out_tokens": 12, "seconds": 5.289, "calls": ["get_changed_functions"], "forced": false}
+{"t": 12.8165, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 27.07, "out_chars": 124}
+{"t": 19.4468, "kind": "llm", "step": 2, "in_tokens": 1506, "out_tokens": 17, "seconds": 4.446, "calls": ["read_log"], "forced": false}
+{"t": 19.447, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.05, "out_chars": 1811}
+{"t": 23.6737, "kind": "llm", "step": 3, "in_tokens": 2041, "out_tokens": 38, "seconds": 1.173, "calls": ["read_file"], "forced": false}
+{"t": 23.6741, "kind": "tool", "name": "read_file", "args": {"path": "boltons/timeutils.py", "start_line": 390, "end_line": 420}, "ms": 0.2, "out_chars": 1527}
+{"t": 31.144, "kind": "llm", "step": 4, "in_tokens": 2600, "out_tokens": 38, "seconds": 1.143, "calls": ["read_file"], "forced": false}
+{"t": 31.1446, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_timeutils.py", "start_line": 50, "end_line": 110}, "ms": 0.41, "out_chars": 2570}
+{"t": 40.0789, "kind": "llm", "step": 5, "in_tokens": 3732, "out_tokens": 17, "seconds": 2.578, "calls": ["search_log"], "forced": false}
+{"t": 40.0791, "kind": "tool", "name": "search_log", "args": {"pattern": "git show"}, "ms": 0.12, "out_chars": 10}
+{"t": 55.8226, "kind": "llm", "step": 6, "in_tokens": 3764, "out_tokens": 178, "seconds": 10.821, "calls": ["submit_report"], "forced": false}
+{"t": 55.8229, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/timeutils.py", "culprit_function": "daterange", "confidence": "high", "evidence": "The change in `boltons/timeutils.py` replaced a correct condition `(probe > start) != (stop > start)` with `start == stop` in the `if` guard for `daterange`. This incorrect guard causes `daterange` to prematurely return or fail to handle `start == stop` correctly, leading to the observed test failures. The original logic was designed to prevent walking in the wrong direction, which is now broken.", "suggested_action": "Revert the change in `boltons/timeutils.py` or restore the previous logic for the `if` condition."}}
+{"t": 55.8231, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/timeutils.py", "culprit_function": "daterange", "confidence": "high", "evidence": "The change in `boltons/timeutils.py` replaced a correct condition `(probe > start) != (stop > start)` with `start == stop` in the `if` guard for `daterange`. This incorrect guard causes `daterange` to prematurely return or fail to handle `start == stop` correctly, leading to the observed test failures. The original logic was designed to prevent walking in the wrong direction, which is now broken.", "suggested_action": "Revert the change in `boltons/timeutils.py` or restore the previous logic for the `if` condition."}, "latency_seconds": 26.393}

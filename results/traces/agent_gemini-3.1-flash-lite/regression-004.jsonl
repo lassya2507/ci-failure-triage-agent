@@ -1,0 +1,14 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-004", "system": "agent"}
+{"t": 5.1952, "kind": "llm", "step": 0, "in_tokens": 926, "out_tokens": 10, "seconds": 0.911, "calls": ["read_diff"], "forced": false}
+{"t": 5.1954, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 818}
+{"t": 12.7336, "kind": "llm", "step": 1, "in_tokens": 1172, "out_tokens": 12, "seconds": 0.95, "calls": ["get_changed_functions"], "forced": false}
+{"t": 12.7419, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 8.13, "out_chars": 103}
+{"t": 20.5961, "kind": "llm", "step": 2, "in_tokens": 1231, "out_tokens": 23, "seconds": 1.312, "calls": ["read_file"], "forced": false}
+{"t": 20.5965, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_typeutils.py"}, "ms": 0.29, "out_chars": 543}
+{"t": 27.6131, "kind": "llm", "step": 3, "in_tokens": 1477, "out_tokens": 36, "seconds": 0.829, "calls": ["read_file"], "forced": false}
+{"t": 27.6134, "kind": "tool", "name": "read_file", "args": {"start_line": 75, "path": "boltons/typeutils.py", "end_line": 90}, "ms": 0.06, "out_chars": 548}
+{"t": 35.2099, "kind": "llm", "step": 4, "in_tokens": 1719, "out_tokens": 17, "seconds": 0.925, "calls": ["read_log"], "forced": false}
+{"t": 35.2101, "kind": "tool", "name": "read_log", "args": {"num_lines": 20}, "ms": 0.04, "out_chars": 1228}
+{"t": 43.038, "kind": "llm", "step": 5, "in_tokens": 2030, "out_tokens": 174, "seconds": 1.253, "calls": ["submit_report"], "forced": false}
+{"t": 43.0382, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/typeutils.py", "culprit_function": "make_sentinel.Sentinel.__bool__", "confidence": "high", "evidence": "The change in boltons/typeutils.py modified the __bool__ method of the Sentinel class to return True instead of False. This directly causes the test 'test_sentinel_falsiness' in 'tests/test_typeutils.py' to fail, as it expects the sentinel object to be falsy ('assert not NOT_SET').", "suggested_action": "Revert the change in boltons/typeutils.py if the sentinel was intended to be falsy, or update the test if the change in behavior is intentional."}}
+{"t": 43.0384, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/typeutils.py", "culprit_function": "make_sentinel.Sentinel.__bool__", "confidence": "high", "evidence": "The change in boltons/typeutils.py modified the __bool__ method of the Sentinel class to return True instead of False. This directly causes the test 'test_sentinel_falsiness' in 'tests/test_typeutils.py' to fail, as it expects the sentinel object to be falsy ('assert not NOT_SET').", "suggested_action": "Revert the change in boltons/typeutils.py if the sentinel was intended to be falsy, or update the test if the change in behavior is intentional."}, "latency_seconds": 6.194}

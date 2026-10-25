@@ -1,0 +1,18 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-034", "system": "agent"}
+{"t": 7.7781, "kind": "llm", "step": 0, "in_tokens": 940, "out_tokens": 29, "seconds": 3.019, "calls": ["search_log"], "forced": false}
+{"t": 7.7784, "kind": "tool", "name": "search_log", "args": {"pattern": "tests/test_strutils.py::test_is_uuid"}, "ms": 0.17, "out_chars": 87}
+{"t": 15.3061, "kind": "llm", "step": 1, "in_tokens": 1009, "out_tokens": 23, "seconds": 3.047, "calls": ["read_log"], "forced": false}
+{"t": 15.3063, "kind": "tool", "name": "read_log", "args": {"num_lines": 20, "start_line": 1}, "ms": 0.03, "out_chars": 1637}
+{"t": 22.9778, "kind": "llm", "step": 2, "in_tokens": 1534, "out_tokens": 10, "seconds": 3.218, "calls": ["read_diff"], "forced": false}
+{"t": 22.978, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1613}
+{"t": 28.0967, "kind": "llm", "step": 3, "in_tokens": 2111, "out_tokens": 12, "seconds": 0.837, "calls": ["get_changed_functions"], "forced": false}
+{"t": 28.1508, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 53.83, "out_chars": 167}
+{"t": 35.6421, "kind": "llm", "step": 4, "in_tokens": 2193, "out_tokens": 38, "seconds": 0.882, "calls": ["read_file"], "forced": false}
+{"t": 35.6426, "kind": "tool", "name": "read_file", "args": {"start_line": 717, "path": "boltons/strutils.py", "end_line": 735}, "ms": 0.28, "out_chars": 741}
+{"t": 45.558, "kind": "llm", "step": 5, "in_tokens": 2595, "out_tokens": 38, "seconds": 3.298, "calls": ["read_file"], "forced": false}
+{"t": 45.5585, "kind": "tool", "name": "read_file", "args": {"end_line": 755, "path": "boltons/strutils.py", "start_line": 740}, "ms": 0.29, "out_chars": 719}
+{"t": 52.8167, "kind": "llm", "step": 6, "in_tokens": 2892, "out_tokens": 38, "seconds": 3.057, "calls": ["read_file"], "forced": false}
+{"t": 52.8173, "kind": "tool", "name": "read_file", "args": {"start_line": 735, "path": "boltons/strutils.py", "end_line": 740}, "ms": 0.39, "out_chars": 274}
+{"t": 58.5692, "kind": "llm", "step": 7, "in_tokens": 3034, "out_tokens": 161, "seconds": 1.309, "calls": ["submit_report"], "forced": false}
+{"t": 58.5695, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/strutils.py", "culprit_function": "is_uuid", "confidence": "high", "evidence": "The function `is_uuid` had its default `version` parameter changed from 4 to 5 in the recent diff. The test `test_is_uuid` calls `is_uuid(uuid.uuid4())` without providing a version, which checks for version 4 by default, but the changed function defaults to version 5, causing the test to fail.", "suggested_action": "Revert the default `version` parameter in `boltons/strutils.py` back to 4."}}
+{"t": 58.5697, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/strutils.py", "culprit_function": "is_uuid", "confidence": "high", "evidence": "The function `is_uuid` had its default `version` parameter changed from 4 to 5 in the recent diff. The test `test_is_uuid` calls `is_uuid(uuid.uuid4())` without providing a version, which checks for version 4 by default, but the changed function defaults to version 5, causing the test to fail.", "suggested_action": "Revert the default `version` parameter in `boltons/strutils.py` back to 4."}, "latency_seconds": 18.73}

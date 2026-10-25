@@ -1,0 +1,12 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-051", "system": "agent"}
+{"t": 6.9931, "kind": "llm", "step": 0, "in_tokens": 1008, "out_tokens": 10, "seconds": 0.703, "calls": ["read_diff"], "forced": false}
+{"t": 6.9933, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 834}
+{"t": 14.7544, "kind": "llm", "step": 1, "in_tokens": 1343, "out_tokens": 12, "seconds": 0.964, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.768, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 13.38, "out_chars": 84}
+{"t": 22.2086, "kind": "llm", "step": 2, "in_tokens": 1399, "out_tokens": 17, "seconds": 0.918, "calls": ["read_log"], "forced": false}
+{"t": 22.2089, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.06, "out_chars": 3174}
+{"t": 30.5426, "kind": "llm", "step": 3, "in_tokens": 2417, "out_tokens": 39, "seconds": 1.752, "calls": ["read_file"], "forced": false}
+{"t": 30.5429, "kind": "tool", "name": "read_file", "args": {"path": "boltons/ecoutils.py", "end_line": 400, "start_line": 380}, "ms": 0.1, "out_chars": 672}
+{"t": 38.1018, "kind": "llm", "step": 4, "in_tokens": 2776, "out_tokens": 182, "seconds": 1.811, "calls": ["submit_report"], "forced": false}
+{"t": 38.1021, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/ecoutils.py", "culprit_function": "_escape_shell_args", "confidence": "high", "evidence": "The diff introduced a logic error in `_escape_shell_args` by changing `if style == 'sh':` to `if style != 'sh':`. This causes the function to try and use `_args2sh` when the style is `cmd`, and fails for `sh` because it bypasses the `sh` branch, ultimately raising a ValueError when it falls through.", "suggested_action": "Change `if style != 'sh':` back to `if style == 'sh':` or fix the logic flow so that 'sh' and 'cmd' are handled correctly."}}
+{"t": 38.1022, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/ecoutils.py", "culprit_function": "_escape_shell_args", "confidence": "high", "evidence": "The diff introduced a logic error in `_escape_shell_args` by changing `if style == 'sh':` to `if style != 'sh':`. This causes the function to try and use `_args2sh` when the style is `cmd`, and fails for `sh` because it bypasses the `sh` branch, ultimately raising a ValueError when it falls through.", "suggested_action": "Change `if style != 'sh':` back to `if style == 'sh':` or fix the logic flow so that 'sh' and 'cmd' are handled correctly."}, "latency_seconds": 6.165}

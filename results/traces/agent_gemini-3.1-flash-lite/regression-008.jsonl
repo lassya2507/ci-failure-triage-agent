@@ -1,0 +1,12 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-008", "system": "agent"}
+{"t": 19.0379, "kind": "llm", "step": 0, "in_tokens": 1016, "out_tokens": 10, "seconds": 12.781, "calls": ["read_diff"], "forced": false}
+{"t": 19.0381, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 1156}
+{"t": 21.8681, "kind": "llm", "step": 1, "in_tokens": 1436, "out_tokens": 12, "seconds": 2.83, "calls": ["get_changed_functions"], "forced": false}
+{"t": 21.9109, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 42.6, "out_chars": 124}
+{"t": 29.3809, "kind": "llm", "step": 2, "in_tokens": 1508, "out_tokens": 17, "seconds": 2.842, "calls": ["read_log"], "forced": false}
+{"t": 29.3811, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.06, "out_chars": 3174}
+{"t": 35.0125, "kind": "llm", "step": 3, "in_tokens": 2520, "out_tokens": 39, "seconds": 0.974, "calls": ["read_file"], "forced": false}
+{"t": 35.0128, "kind": "tool", "name": "read_file", "args": {"end_line": 400, "start_line": 375, "path": "boltons/ecoutils.py"}, "ms": 0.1, "out_chars": 843}
+{"t": 46.7108, "kind": "llm", "step": 4, "in_tokens": 2928, "out_tokens": 161, "seconds": 5.172, "calls": ["submit_report"], "forced": false}
+{"t": 46.711, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/ecoutils.py", "culprit_function": "_escape_shell_args", "confidence": "high", "evidence": "The change in _escape_shell_args reversed the logic for setting the default style when style is None. Instead of setting style to 'cmd' or 'sh' when it is falsy, the code now only sets it when it is truthy, leading to a ValueError because style remains None and the function fails to choose a shell type.", "suggested_action": "Revert the change in boltons/ecoutils.py to correctly assign the default shell style when style is falsy."}}
+{"t": 46.7112, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/ecoutils.py", "culprit_function": "_escape_shell_args", "confidence": "high", "evidence": "The change in _escape_shell_args reversed the logic for setting the default style when style is None. Instead of setting style to 'cmd' or 'sh' when it is falsy, the code now only sets it when it is truthy, leading to a ValueError because style remains None and the function fails to choose a shell type.", "suggested_action": "Revert the change in boltons/ecoutils.py to correctly assign the default shell style when style is falsy."}, "latency_seconds": 24.646}

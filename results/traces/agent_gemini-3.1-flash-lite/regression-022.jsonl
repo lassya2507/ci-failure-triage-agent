@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-022", "system": "agent"}
+{"t": 112.5299, "kind": "llm", "step": 0, "in_tokens": 934, "out_tokens": 29, "seconds": 110.687, "calls": ["search_log"], "forced": false}
+{"t": 112.5304, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_fileutils.py::test_fileperms"}, "ms": 0.26, "out_chars": 87}
+{"t": 120.1734, "kind": "llm", "step": 1, "in_tokens": 1005, "out_tokens": 23, "seconds": 7.643, "calls": ["read_log"], "forced": false}
+{"t": 120.1736, "kind": "tool", "name": "read_log", "args": {"num_lines": 20, "start_line": 1}, "ms": 0.03, "out_chars": 1300}
+{"t": 127.7811, "kind": "llm", "step": 2, "in_tokens": 1366, "out_tokens": 10, "seconds": 7.607, "calls": ["read_diff"], "forced": false}
+{"t": 127.7813, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 1164}
+{"t": 128.7695, "kind": "llm", "step": 3, "in_tokens": 1789, "out_tokens": 12, "seconds": 0.988, "calls": ["get_changed_functions"], "forced": false}
+{"t": 128.7812, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 11.48, "out_chars": 114}
+{"t": 136.5466, "kind": "llm", "step": 4, "in_tokens": 1856, "out_tokens": 23, "seconds": 1.265, "calls": ["read_file"], "forced": false}
+{"t": 136.547, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_fileutils.py"}, "ms": 0.33, "out_chars": 3720}
+{"t": 146.8306, "kind": "llm", "step": 5, "in_tokens": 3390, "out_tokens": 30, "seconds": 4.049, "calls": ["read_file"], "forced": false}
+{"t": 146.8311, "kind": "tool", "name": "read_file", "args": {"start_line": 150, "path": "boltons/fileutils.py"}, "ms": 0.27, "out_chars": 3775}
+{"t": 151.6312, "kind": "llm", "step": 6, "in_tokens": 4915, "out_tokens": 159, "seconds": 1.349, "calls": ["submit_report"], "forced": false}
+{"t": 151.6315, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/fileutils.py", "culprit_function": "FilePerms.__init__", "confidence": "high", "evidence": "The diff changed FilePerms._integer initialization from 0 to 1 in boltons/fileutils.py. This directly caused the assertion '0o771' == '0o770' to fail in tests/test_fileutils.py, as the FilePerms object is now initialized with a different base integer.", "suggested_action": "Revert the change to FilePerms._integer or update the test if the change in behavior is intentional and correct."}}
+{"t": 151.6317, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/fileutils.py", "culprit_function": "FilePerms.__init__", "confidence": "high", "evidence": "The diff changed FilePerms._integer initialization from 0 to 1 in boltons/fileutils.py. This directly caused the assertion '0o771' == '0o770' to fail in tests/test_fileutils.py, as the FilePerms object is now initialized with a different base integer.", "suggested_action": "Revert the change to FilePerms._integer or update the test if the change in behavior is intentional and correct."}, "latency_seconds": 133.605}

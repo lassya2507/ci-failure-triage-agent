@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-036", "system": "agent"}
+{"t": 19.475, "kind": "llm", "step": 0, "in_tokens": 925, "out_tokens": 10, "seconds": 13.284, "calls": ["read_diff"], "forced": false}
+{"t": 19.4752, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 815}
+{"t": 36.0706, "kind": "llm", "step": 1, "in_tokens": 1230, "out_tokens": 12, "seconds": 16.595, "calls": ["get_changed_functions"], "forced": false}
+{"t": 36.0732, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 2.49, "out_chars": 81}
+{"t": 53.7022, "kind": "llm", "step": 2, "in_tokens": 1283, "out_tokens": 31, "seconds": 17.629, "calls": ["search_log"], "forced": false}
+{"t": 53.7025, "kind": "tool", "name": "search_log", "args": {"pattern": "tests/test_pathutils.py::test_augpath_multidot"}, "ms": 0.19, "out_chars": 87}
+{"t": 61.8076, "kind": "llm", "step": 3, "in_tokens": 1355, "out_tokens": 23, "seconds": 8.105, "calls": ["read_log"], "forced": false}
+{"t": 61.8078, "kind": "tool", "name": "read_log", "args": {"num_lines": 50, "start_line": 1}, "ms": 0.04, "out_chars": 1392}
+{"t": 68.2995, "kind": "llm", "step": 4, "in_tokens": 1742, "out_tokens": 22, "seconds": 6.491, "calls": ["read_file"], "forced": false}
+{"t": 68.2997, "kind": "tool", "name": "read_file", "args": {"path": "boltons/pathutils.py"}, "ms": 0.11, "out_chars": 4705}
+{"t": 93.5003, "kind": "llm", "step": 5, "in_tokens": 3164, "out_tokens": 38, "seconds": 24.192, "calls": ["read_file"], "forced": false}
+{"t": 93.5005, "kind": "tool", "name": "read_file", "args": {"start_line": 101, "end_line": 130, "path": "boltons/pathutils.py"}, "ms": 0.07, "out_chars": 1238}
+{"t": 95.0487, "kind": "llm", "step": 6, "in_tokens": 3700, "out_tokens": 181, "seconds": 1.548, "calls": ["submit_report"], "forced": false}
+{"t": 95.049, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/pathutils.py", "culprit_function": "augpath", "confidence": "high", "evidence": "The change introduced in `boltons/pathutils.py` incorrectly inverted the condition in `orig_ext` calculation when `multidot=True`. Specifically, `orig_ext = '' if len(parts) != 1 else '.' + parts[1]` results in an empty string when there *is* an extension (len(parts) > 1), causing `augpath` to strip the extension incorrectly.", "suggested_action": "Revert the condition in `boltons/pathutils.py` from `len(parts) != 1` back to `len(parts) == 1`."}}
+{"t": 95.0491, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/pathutils.py", "culprit_function": "augpath", "confidence": "high", "evidence": "The change introduced in `boltons/pathutils.py` incorrectly inverted the condition in `orig_ext` calculation when `multidot=True`. Specifically, `orig_ext = '' if len(parts) != 1 else '.' + parts[1]` results in an empty string when there *is* an extension (len(parts) > 1), causing `augpath` to strip the extension incorrectly.", "suggested_action": "Revert the condition in `boltons/pathutils.py` from `len(parts) != 1` back to `len(parts) == 1`."}, "latency_seconds": 87.851}

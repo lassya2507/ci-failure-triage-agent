@@ -1,0 +1,14 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-004", "system": "agent"}
+{"t": 3.8136, "kind": "llm", "step": 0, "in_tokens": 915, "out_tokens": 10, "seconds": 0.79, "calls": ["read_diff"], "forced": false}
+{"t": 3.8137, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 359}
+{"t": 13.8073, "kind": "llm", "step": 1, "in_tokens": 1047, "out_tokens": 12, "seconds": 3.283, "calls": ["get_changed_functions"], "forced": false}
+{"t": 13.8263, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 18.88, "out_chars": 49}
+{"t": 22.6438, "kind": "llm", "step": 2, "in_tokens": 1090, "out_tokens": 17, "seconds": 4.62, "calls": ["read_log"], "forced": false}
+{"t": 22.644, "kind": "tool", "name": "read_log", "args": {"num_lines": 20}, "ms": 0.04, "out_chars": 1405}
+{"t": 26.5224, "kind": "llm", "step": 3, "in_tokens": 1496, "out_tokens": 23, "seconds": 0.998, "calls": ["read_file"], "forced": false}
+{"t": 26.5227, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_namedutils.py"}, "ms": 0.08, "out_chars": 1793}
+{"t": 34.1494, "kind": "llm", "step": 4, "in_tokens": 2233, "out_tokens": 31, "seconds": 1.125, "calls": ["rerun_test"], "forced": false}
+{"t": 34.1495, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_namedutils.py::test_namedlist"}, "ms": 0.01, "out_chars": 428}
+{"t": 47.5433, "kind": "llm", "step": 5, "in_tokens": 2446, "out_tokens": 118, "seconds": 7.019, "calls": ["submit_report"], "forced": false}
+{"t": 47.5435, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test uses random.shuffle and asserts that index 0 is at a position less than 7, which fails whenever index 0 is at position 7, 8, or 9. The failure is entirely independent of the change in boltons/funcutils.py, which is unrelated to test_namedutils.py.", "suggested_action": "Fix the test to use a fixed seed or a more robust assertion."}}
+{"t": 47.5436, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test uses random.shuffle and asserts that index 0 is at a position less than 7, which fails whenever index 0 is at position 7, 8, or 9. The failure is entirely independent of the change in boltons/funcutils.py, which is unrelated to test_namedutils.py.", "suggested_action": "Fix the test to use a fixed seed or a more robust assertion."}, "latency_seconds": 18.168}

@@ -1,0 +1,12 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-019", "system": "agent"}
+{"t": 6.7523, "kind": "llm", "step": 0, "in_tokens": 1005, "out_tokens": 10, "seconds": 0.786, "calls": ["read_diff"], "forced": false}
+{"t": 6.7525, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 814}
+{"t": 14.1226, "kind": "llm", "step": 1, "in_tokens": 1331, "out_tokens": 12, "seconds": 0.657, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.1547, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 31.9, "out_chars": 63}
+{"t": 28.7228, "kind": "llm", "step": 2, "in_tokens": 1380, "out_tokens": 17, "seconds": 7.757, "calls": ["read_log"], "forced": false}
+{"t": 28.7231, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.07, "out_chars": 2923}
+{"t": 33.2843, "kind": "llm", "step": 3, "in_tokens": 2312, "out_tokens": 38, "seconds": 4.561, "calls": ["read_file"], "forced": false}
+{"t": 33.2848, "kind": "tool", "name": "read_file", "args": {"end_line": 535, "start_line": 515, "path": "boltons/iterutils.py"}, "ms": 0.3, "out_chars": 656}
+{"t": 37.4572, "kind": "llm", "step": 4, "in_tokens": 2664, "out_tokens": 157, "seconds": 1.233, "calls": ["submit_report"], "forced": false}
+{"t": 37.4575, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/iterutils.py", "culprit_function": "xfrange", "confidence": "high", "evidence": "The change in `xfrange` reversed the logic of the `if not step` check to `if step`, which incorrectly raises a `ValueError` when a valid non-zero step is provided and allows `step=0` to pass, causing a `ZeroDivisionError` later. The original code correctly validated that the step must be non-zero.", "suggested_action": "Revert the change in `boltons/iterutils.py` to use `if not step:` again."}}
+{"t": 37.4576, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/iterutils.py", "culprit_function": "xfrange", "confidence": "high", "evidence": "The change in `xfrange` reversed the logic of the `if not step` check to `if step`, which incorrectly raises a `ValueError` when a valid non-zero step is provided and allows `step=0` to pass, causing a `ZeroDivisionError` later. The original code correctly validated that the step must be non-zero.", "suggested_action": "Revert the change in `boltons/iterutils.py` to use `if not step:` again."}, "latency_seconds": 15.03}

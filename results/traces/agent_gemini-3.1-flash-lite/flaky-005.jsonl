@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-005", "system": "agent"}
+{"t": 6.9456, "kind": "llm", "step": 0, "in_tokens": 917, "out_tokens": 10, "seconds": 0.809, "calls": ["read_diff"], "forced": false}
+{"t": 6.9458, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 470}
+{"t": 14.6474, "kind": "llm", "step": 1, "in_tokens": 1106, "out_tokens": 12, "seconds": 1.01, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.651, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 3.45, "out_chars": 37}
+{"t": 22.0806, "kind": "llm", "step": 2, "in_tokens": 1146, "out_tokens": 32, "seconds": 0.943, "calls": ["search_log"], "forced": false}
+{"t": 22.081, "kind": "tool", "name": "search_log", "args": {"pattern": "tests/test_typeutils.py::test_sentinel_falsiness"}, "ms": 0.25, "out_chars": 87}
+{"t": 29.4551, "kind": "llm", "step": 3, "in_tokens": 1219, "out_tokens": 23, "seconds": 0.818, "calls": ["read_log"], "forced": false}
+{"t": 29.4554, "kind": "tool", "name": "read_log", "args": {"num_lines": 50, "start_line": 1}, "ms": 0.12, "out_chars": 1695}
+{"t": 37.0005, "kind": "llm", "step": 4, "in_tokens": 1709, "out_tokens": 23, "seconds": 0.863, "calls": ["read_file"], "forced": false}
+{"t": 37.0007, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_typeutils.py"}, "ms": 0.03, "out_chars": 645}
+{"t": 44.4909, "kind": "llm", "step": 5, "in_tokens": 1989, "out_tokens": 35, "seconds": 0.853, "calls": ["rerun_test"], "forced": false}
+{"t": 44.491, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_typeutils.py::test_sentinel_falsiness"}, "ms": 0.02, "out_chars": 172}
+{"t": 54.1807, "kind": "llm", "step": 6, "in_tokens": 2088, "out_tokens": 141, "seconds": 3.043, "calls": ["submit_report"], "forced": false}
+{"t": 54.1809, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test failure 'test_sentinel_falsiness' is caused by non-deterministic order of elements in a set iteration (as seen in the log: 'beta,alpha,gamma' vs expected 'alpha...'), which passed upon rerun. The changed code in 'boltons/mathutils.py' is unrelated to this test.", "suggested_action": "The test 'test_sentinel_falsiness' should be fixed to account for the non-deterministic order of sets, perhaps by sorting the labels before joining them."}}
+{"t": 54.181, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test failure 'test_sentinel_falsiness' is caused by non-deterministic order of elements in a set iteration (as seen in the log: 'beta,alpha,gamma' vs expected 'alpha...'), which passed upon rerun. The changed code in 'boltons/mathutils.py' is unrelated to this test.", "suggested_action": "The test 'test_sentinel_falsiness' should be fixed to account for the non-deterministic order of sets, perhaps by sorting the labels before joining them."}, "latency_seconds": 8.65}

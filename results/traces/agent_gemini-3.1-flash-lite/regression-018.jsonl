@@ -1,0 +1,12 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-018", "system": "agent"}
+{"t": 6.8231, "kind": "llm", "step": 0, "in_tokens": 1041, "out_tokens": 10, "seconds": 0.714, "calls": ["read_log"], "forced": false}
+{"t": 6.8234, "kind": "tool", "name": "read_log", "args": {}, "ms": 0.07, "out_chars": 4293}
+{"t": 14.6389, "kind": "llm", "step": 1, "in_tokens": 2455, "out_tokens": 10, "seconds": 1.03, "calls": ["read_diff"], "forced": false}
+{"t": 14.6391, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 1089}
+{"t": 21.9981, "kind": "llm", "step": 2, "in_tokens": 2870, "out_tokens": 22, "seconds": 0.889, "calls": ["read_file"], "forced": false}
+{"t": 21.9984, "kind": "tool", "name": "read_file", "args": {"path": "boltons/jsonutils.py"}, "ms": 0.12, "out_chars": 4813}
+{"t": 29.7961, "kind": "llm", "step": 3, "in_tokens": 4355, "out_tokens": 12, "seconds": 1.187, "calls": ["get_changed_functions"], "forced": false}
+{"t": 29.8121, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 15.85, "out_chars": 114}
+{"t": 37.6429, "kind": "llm", "step": 4, "in_tokens": 4424, "out_tokens": 171, "seconds": 1.533, "calls": ["submit_report"], "forced": false}
+{"t": 37.6431, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/jsonutils.py", "culprit_function": "reverse_iter_lines", "confidence": "high", "evidence": "The change in `boltons/jsonutils.py` inverted a condition (`lines[0] == empty_bytes` to `lines[0] != empty_bytes`), which breaks the logic in `reverse_iter_lines` that identifies when a complete line has been read. This causes the function to return incorrect data, leading to the observed test failures where lines are concatenated incorrectly.", "suggested_action": "Revert the condition change in `boltons/jsonutils.py` to its previous state (`lines[0] == empty_bytes`)."}}
+{"t": 37.6433, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/jsonutils.py", "culprit_function": "reverse_iter_lines", "confidence": "high", "evidence": "The change in `boltons/jsonutils.py` inverted a condition (`lines[0] == empty_bytes` to `lines[0] != empty_bytes`), which breaks the logic in `reverse_iter_lines` that identifies when a complete line has been read. This causes the function to return incorrect data, leading to the observed test failures where lines are concatenated incorrectly.", "suggested_action": "Revert the condition change in `boltons/jsonutils.py` to its previous state (`lines[0] == empty_bytes`)."}, "latency_seconds": 5.373}

@@ -1,0 +1,14 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-030", "system": "agent"}
+{"t": 6.9959, "kind": "llm", "step": 0, "in_tokens": 924, "out_tokens": 21, "seconds": 1.008, "calls": ["search_log"], "forced": false}
+{"t": 6.9962, "kind": "tool", "name": "search_log", "args": {"pattern": "test_split_fstr"}, "ms": 0.13, "out_chars": 231}
+{"t": 14.2579, "kind": "llm", "step": 1, "in_tokens": 1026, "out_tokens": 24, "seconds": 0.77, "calls": ["read_log"], "forced": false}
+{"t": 14.2581, "kind": "tool", "name": "read_log", "args": {"start_line": 11, "num_lines": 20}, "ms": 0.03, "out_chars": 773}
+{"t": 24.8185, "kind": "llm", "step": 2, "in_tokens": 1331, "out_tokens": 37, "seconds": 3.83, "calls": ["read_file"], "forced": false}
+{"t": 24.8188, "kind": "tool", "name": "read_file", "args": {"start_line": 90, "end_line": 100, "path": "boltons/formatutils.py"}, "ms": 0.09, "out_chars": 348}
+{"t": 30.0712, "kind": "llm", "step": 3, "in_tokens": 1517, "out_tokens": 10, "seconds": 1.583, "calls": ["read_diff"], "forced": false}
+{"t": 30.0715, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 608}
+{"t": 37.2162, "kind": "llm", "step": 4, "in_tokens": 1758, "out_tokens": 12, "seconds": 1.228, "calls": ["get_changed_functions"], "forced": false}
+{"t": 37.2219, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 5.54, "out_chars": 99}
+{"t": 50.8323, "kind": "llm", "step": 5, "in_tokens": 1815, "out_tokens": 121, "seconds": 7.344, "calls": ["submit_report"], "forced": false}
+{"t": 50.8326, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/formatutils.py", "culprit_function": "construct_format_field_str", "confidence": "high", "evidence": "The diff introduced a typo by changing a '+' to a '-' in construct_format_field_str, which causes a TypeError when processing format strings with specifications.", "suggested_action": "Revert the change in construct_format_field_str from ':' - fspec back to ':' + fspec."}}
+{"t": 50.8327, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/formatutils.py", "culprit_function": "construct_format_field_str", "confidence": "high", "evidence": "The diff introduced a typo by changing a '+' to a '-' in construct_format_field_str, which causes a TypeError when processing format strings with specifications.", "suggested_action": "Revert the change in construct_format_field_str from ':' - fspec back to ':' + fspec."}, "latency_seconds": 15.773}

@@ -1,0 +1,14 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-007", "system": "agent"}
+{"t": 2.0646, "kind": "llm", "step": 0, "in_tokens": 931, "out_tokens": 30, "seconds": 0.821, "calls": ["search_log"], "forced": false}
+{"t": 2.065, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_tableutils.py::test_table_dicts"}, "ms": 0.17, "out_chars": 87}
+{"t": 10.936, "kind": "llm", "step": 1, "in_tokens": 1000, "out_tokens": 23, "seconds": 2.193, "calls": ["read_log"], "forced": false}
+{"t": 10.9362, "kind": "tool", "name": "read_log", "args": {"num_lines": 50, "start_line": 1}, "ms": 0.03, "out_chars": 1611}
+{"t": 31.6383, "kind": "llm", "step": 2, "in_tokens": 1452, "out_tokens": 10, "seconds": 15.395, "calls": ["read_diff"], "forced": false}
+{"t": 31.6385, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.03, "out_chars": 1409}
+{"t": 32.5061, "kind": "llm", "step": 3, "in_tokens": 1965, "out_tokens": 12, "seconds": 0.867, "calls": ["get_changed_functions"], "forced": false}
+{"t": 32.5285, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 22.26, "out_chars": 136}
+{"t": 39.9617, "kind": "llm", "step": 4, "in_tokens": 2038, "out_tokens": 38, "seconds": 0.823, "calls": ["read_file"], "forced": false}
+{"t": 39.9621, "kind": "tool", "name": "read_file", "args": {"path": "boltons/tableutils.py", "start_line": 510, "end_line": 525}, "ms": 0.12, "out_chars": 925}
+{"t": 47.8817, "kind": "llm", "step": 5, "in_tokens": 2404, "out_tokens": 164, "seconds": 1.243, "calls": ["submit_report"], "forced": false}
+{"t": 47.882, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/tableutils.py", "culprit_function": "Table._add_horizontal_html_lines", "confidence": "high", "evidence": "The diff shows that in `Table._add_horizontal_html_lines`, the concatenation of `self._html_td_close + self._html_td` was mistakenly changed to subtraction (`self._html_td_close - self._html_td`), which is invalid for strings. This directly causes the observed TypeError in `test_table_dicts`.", "suggested_action": "Revert the subtraction operator to the addition operator in boltons/tableutils.py line 518."}}
+{"t": 47.8821, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/tableutils.py", "culprit_function": "Table._add_horizontal_html_lines", "confidence": "high", "evidence": "The diff shows that in `Table._add_horizontal_html_lines`, the concatenation of `self._html_td_close + self._html_td` was mistakenly changed to subtraction (`self._html_td_close - self._html_td`), which is invalid for strings. This directly causes the observed TypeError in `test_table_dicts`.", "suggested_action": "Revert the subtraction operator to the addition operator in boltons/tableutils.py line 518."}, "latency_seconds": 21.368}

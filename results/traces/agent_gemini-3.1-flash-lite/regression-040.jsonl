@@ -1,0 +1,20 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-040", "system": "agent"}
+{"t": 8.255, "kind": "llm", "step": 0, "in_tokens": 934, "out_tokens": 32, "seconds": 3.357, "calls": ["search_log"], "forced": false}
+{"t": 8.2555, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_socketutils.py::test_socketutils_netstring"}, "ms": 0.22, "out_chars": 87}
+{"t": 14.6942, "kind": "llm", "step": 1, "in_tokens": 1007, "out_tokens": 24, "seconds": 2.296, "calls": ["read_log"], "forced": false}
+{"t": 14.6944, "kind": "tool", "name": "read_log", "args": {"start_line": 23, "num_lines": 20}, "ms": 0.04, "out_chars": 1265}
+{"t": 23.6661, "kind": "llm", "step": 2, "in_tokens": 1486, "out_tokens": 12, "seconds": 3.768, "calls": ["get_changed_functions"], "forced": false}
+{"t": 23.6977, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 31.45, "out_chars": 124}
+{"t": 31.5567, "kind": "llm", "step": 3, "in_tokens": 1556, "out_tokens": 10, "seconds": 4.159, "calls": ["read_diff"], "forced": false}
+{"t": 31.5569, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1413}
+{"t": 36.2819, "kind": "llm", "step": 4, "in_tokens": 2031, "out_tokens": 38, "seconds": 1.383, "calls": ["read_file"], "forced": false}
+{"t": 36.2822, "kind": "tool", "name": "read_file", "args": {"path": "boltons/socketutils.py", "start_line": 670, "end_line": 700}, "ms": 0.21, "out_chars": 1378}
+{"t": 45.68, "kind": "llm", "step": 5, "in_tokens": 2559, "out_tokens": 39, "seconds": 3.281, "calls": ["read_file"], "forced": false}
+{"t": 45.6805, "kind": "tool", "name": "read_file", "args": {"start_line": 240, "end_line": 260, "path": "tests/test_socketutils.py"}, "ms": 0.32, "out_chars": 875}
+{"t": 51.1676, "kind": "llm", "step": 6, "in_tokens": 2905, "out_tokens": 22, "seconds": 1.269, "calls": ["search_log"], "forced": false}
+{"t": 51.168, "kind": "tool", "name": "search_log", "args": {"pattern": "test_socketutils_netstring"}, "ms": 0.22, "out_chars": 243}
+{"t": 61.068, "kind": "llm", "step": 7, "in_tokens": 3012, "out_tokens": 39, "seconds": 3.669, "calls": ["read_file"], "forced": false}
+{"t": 61.0686, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_socketutils.py", "end_line": 360, "start_line": 320}, "ms": 0.41, "out_chars": 1648}
+{"t": 88.1444, "kind": "llm", "step": 8, "in_tokens": 3706, "out_tokens": 196, "seconds": 23.245, "calls": ["submit_report"], "forced": false}
+{"t": 88.1446, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/socketutils.py", "culprit_function": "NetstringSocket.read_ns", "confidence": "high", "evidence": "The change from `if size > maxsize:` to `if size >= maxsize:` in `NetstringSocket.read_ns` breaks the test case where `maxsize` is 2048 and the server is asked to send 2048 bytes (or a payload of 4k that might be checked against the limit). When `size` equals `maxsize`, it now incorrectly raises a `NetstringMessageTooLong` exception instead of accepting the message.", "suggested_action": "Revert the condition to `if size > maxsize:` or adjust the test if the behavior change was intentional (though it seems to break existing functionality)."}}
+{"t": 88.1448, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/socketutils.py", "culprit_function": "NetstringSocket.read_ns", "confidence": "high", "evidence": "The change from `if size > maxsize:` to `if size >= maxsize:` in `NetstringSocket.read_ns` breaks the test case where `maxsize` is 2048 and the server is asked to send 2048 bytes (or a payload of 4k that might be checked against the limit). When `size` equals `maxsize`, it now incorrectly raises a `NetstringMessageTooLong` exception instead of accepting the message.", "suggested_action": "Revert the condition to `if size > maxsize:` or adjust the test if the behavior change was intentional (though it seems to break existing functionality)."}, "latency_seconds": 46.468}

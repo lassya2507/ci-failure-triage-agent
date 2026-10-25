@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-007", "system": "agent"}
+{"t": 7.0472, "kind": "llm", "step": 0, "in_tokens": 926, "out_tokens": 10, "seconds": 0.803, "calls": ["read_diff"], "forced": false}
+{"t": 7.0474, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 983}
+{"t": 15.5154, "kind": "llm", "step": 1, "in_tokens": 1259, "out_tokens": 12, "seconds": 1.771, "calls": ["get_changed_functions"], "forced": false}
+{"t": 15.5399, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 24.26, "out_chars": 103}
+{"t": 22.3822, "kind": "llm", "step": 2, "in_tokens": 1313, "out_tokens": 31, "seconds": 1.137, "calls": ["search_log"], "forced": false}
+{"t": 22.3827, "kind": "tool", "name": "search_log", "args": {"pattern": "tests/test_statsutils_histogram.py::test_norm_regression"}, "ms": 0.25, "out_chars": 85}
+{"t": 34.9909, "kind": "llm", "step": 3, "in_tokens": 1386, "out_tokens": 23, "seconds": 6.246, "calls": ["read_log"], "forced": false}
+{"t": 34.9911, "kind": "tool", "name": "read_log", "args": {"num_lines": 20, "start_line": 1}, "ms": 0.04, "out_chars": 1437}
+{"t": 37.2195, "kind": "llm", "step": 4, "in_tokens": 1799, "out_tokens": 39, "seconds": 0.974, "calls": ["read_file"], "forced": false}
+{"t": 37.2198, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_statsutils_histogram.py", "start_line": 40, "end_line": 60}, "ms": 0.08, "out_chars": 799}
+{"t": 44.7408, "kind": "llm", "step": 5, "in_tokens": 2162, "out_tokens": 34, "seconds": 0.996, "calls": ["rerun_test"], "forced": false}
+{"t": 44.741, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_statsutils_histogram.py::test_norm_regression"}, "ms": 0.01, "out_chars": 180}
+{"t": 55.4938, "kind": "llm", "step": 6, "in_tokens": 2259, "out_tokens": 123, "seconds": 4.248, "calls": ["submit_report"], "forced": false}
+{"t": 55.494, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The failed test test_norm_regression uses random.shuffle on a list and asserts an index property that is not guaranteed to hold (index < 7). The test passed upon rerun, indicating it is nondeterministic and not related to the changes in boltons/funcutils.py or boltons/setutils.py.", "suggested_action": "Update the test to not rely on probabilistic assumptions or seed the random number generator to make it deterministic."}}
+{"t": 55.4941, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The failed test test_norm_regression uses random.shuffle on a list and asserts an index property that is not guaranteed to hold (index < 7). The test passed upon rerun, indicating it is nondeterministic and not related to the changes in boltons/funcutils.py or boltons/setutils.py.", "suggested_action": "Update the test to not rely on probabilistic assumptions or seed the random number generator to make it deterministic."}, "latency_seconds": 16.496}

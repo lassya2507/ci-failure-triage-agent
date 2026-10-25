@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-013", "system": "agent"}
+{"t": 6.8511, "kind": "llm", "step": 0, "in_tokens": 928, "out_tokens": 35, "seconds": 0.864, "calls": ["search_log"], "forced": false}
+{"t": 6.8514, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_timeutils.py::test_isoparse_fraction_overprecise"}, "ms": 0.18, "out_chars": 87}
+{"t": 14.2712, "kind": "llm", "step": 1, "in_tokens": 1006, "out_tokens": 23, "seconds": 0.785, "calls": ["read_log"], "forced": false}
+{"t": 14.2714, "kind": "tool", "name": "read_log", "args": {"num_lines": 20, "start_line": 1}, "ms": 0.03, "out_chars": 1442}
+{"t": 21.6022, "kind": "llm", "step": 2, "in_tokens": 1432, "out_tokens": 10, "seconds": 0.615, "calls": ["read_diff"], "forced": false}
+{"t": 21.6025, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.1, "out_chars": 719}
+{"t": 29.4763, "kind": "llm", "step": 3, "in_tokens": 1693, "out_tokens": 12, "seconds": 0.989, "calls": ["get_changed_functions"], "forced": false}
+{"t": 29.5848, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 108.32, "out_chars": 86}
+{"t": 40.5768, "kind": "llm", "step": 4, "in_tokens": 1749, "out_tokens": 37, "seconds": 4.59, "calls": ["read_file"], "forced": false}
+{"t": 40.577, "kind": "tool", "name": "read_file", "args": {"start_line": 75, "end_line": 95, "path": "tests/test_timeutils.py"}, "ms": 0.06, "out_chars": 862}
+{"t": 44.4344, "kind": "llm", "step": 5, "in_tokens": 2186, "out_tokens": 37, "seconds": 0.947, "calls": ["rerun_test"], "forced": false}
+{"t": 44.4346, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_timeutils.py::test_isoparse_fraction_overprecise"}, "ms": 0.02, "out_chars": 183}
+{"t": 52.3923, "kind": "llm", "step": 6, "in_tokens": 2289, "out_tokens": 129, "seconds": 1.405, "calls": ["submit_report"], "forced": false}
+{"t": 52.3925, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_isoparse_fraction_overprecise` contains a random shuffle and a nondeterministic assertion (`assert items.index(0) < 7`), which caused the test to fail. The test passed upon rerun without any code changes, confirming it is flaky and unrelated to the changes in `boltons/cacheutils.py` and `boltons/ioutils.py`.", "suggested_action": "Fix the test to remove nondeterministic behavior."}}
+{"t": 52.3927, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_isoparse_fraction_overprecise` contains a random shuffle and a nondeterministic assertion (`assert items.index(0) < 7`), which caused the test to fail. The test passed upon rerun without any code changes, confirming it is flaky and unrelated to the changes in `boltons/cacheutils.py` and `boltons/ioutils.py`.", "suggested_action": "Fix the test to remove nondeterministic behavior."}, "latency_seconds": 10.684}

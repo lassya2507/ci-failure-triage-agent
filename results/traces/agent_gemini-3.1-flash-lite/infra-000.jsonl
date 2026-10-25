@@ -1,0 +1,12 @@
+{"t": 0.0, "kind": "case_start", "case": "infra-000", "system": "agent"}
+{"t": 10.0945, "kind": "llm", "step": 0, "in_tokens": 1206, "out_tokens": 10, "seconds": 3.693, "calls": ["read_diff"], "forced": false}
+{"t": 10.0947, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 621}
+{"t": 14.526, "kind": "llm", "step": 1, "in_tokens": 1435, "out_tokens": 17, "seconds": 0.624, "calls": ["read_log"], "forced": false}
+{"t": 14.5264, "kind": "tool", "name": "read_log", "args": {"num_lines": 50}, "ms": 0.17, "out_chars": 3481}
+{"t": 24.8969, "kind": "llm", "step": 2, "in_tokens": 2612, "out_tokens": 20, "seconds": 3.495, "calls": ["search_log"], "forced": false}
+{"t": 24.8975, "kind": "tool", "name": "search_log", "args": {"pattern": "OSError: could not"}, "ms": 0.42, "out_chars": 1167}
+{"t": 29.7532, "kind": "llm", "step": 3, "in_tokens": 3013, "out_tokens": 12, "seconds": 0.851, "calls": ["get_changed_functions"], "forced": false}
+{"t": 29.7573, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 3.98, "out_chars": 65}
+{"t": 38.0747, "kind": "llm", "step": 4, "in_tokens": 3058, "out_tokens": 133, "seconds": 1.672, "calls": ["submit_report"], "forced": false}
+{"t": 38.0749, "kind": "submit", "ok": true, "report": {"category": "infra", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The CI run is failing with 'OSError: could not create numbered dir with prefix pytest-...' in /tmp/pytest-of-root across many tests. This is a clear indicator of an environment/infrastructure issue (likely running out of disk space or permissions in /tmp) and is completely unrelated to the changes made in boltons/formatutils.py.", "suggested_action": "The infrastructure team should investigate the CI environment's /tmp directory status (disk space, inode limits, or permissions)."}}
+{"t": 38.0751, "kind": "case_end", "report": {"category": "infra", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The CI run is failing with 'OSError: could not create numbered dir with prefix pytest-...' in /tmp/pytest-of-root across many tests. This is a clear indicator of an environment/infrastructure issue (likely running out of disk space or permissions in /tmp) and is completely unrelated to the changes made in boltons/formatutils.py.", "suggested_action": "The infrastructure team should investigate the CI environment's /tmp directory status (disk space, inode limits, or permissions)."}, "latency_seconds": 10.345}

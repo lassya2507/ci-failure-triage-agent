@@ -1,0 +1,22 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-002", "system": "agent"}
+{"t": 7.3461, "kind": "llm", "step": 0, "in_tokens": 926, "out_tokens": 10, "seconds": 0.974, "calls": ["read_diff"], "forced": false}
+{"t": 7.3463, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 834}
+{"t": 14.4995, "kind": "llm", "step": 1, "in_tokens": 1256, "out_tokens": 12, "seconds": 0.627, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.5192, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 19.39, "out_chars": 79}
+{"t": 22.2625, "kind": "llm", "step": 2, "in_tokens": 1313, "out_tokens": 33, "seconds": 0.89, "calls": ["search_log"], "forced": false}
+{"t": 22.263, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_formatutils.py::test_get_fstr_args"}, "ms": 0.25, "out_chars": 87}
+{"t": 29.8247, "kind": "llm", "step": 3, "in_tokens": 1387, "out_tokens": 17, "seconds": 0.952, "calls": ["read_log"], "forced": false}
+{"t": 29.8249, "kind": "tool", "name": "read_log", "args": {"start_line": 19}, "ms": 0.03, "out_chars": 163}
+{"t": 37.4614, "kind": "llm", "step": 4, "in_tokens": 1482, "out_tokens": 23, "seconds": 1.088, "calls": ["search_log"], "forced": false}
+{"t": 37.4617, "kind": "tool", "name": "search_log", "args": {"pattern": "test_get_fstr_args"}, "ms": 0.19, "out_chars": 234}
+{"t": 44.501, "kind": "llm", "step": 5, "in_tokens": 1591, "out_tokens": 16, "seconds": 0.628, "calls": ["read_log"], "forced": false}
+{"t": 44.5012, "kind": "tool", "name": "read_log", "args": {"start_line": 1}, "ms": 0.03, "out_chars": 1692}
+{"t": 52.46, "kind": "llm", "step": 6, "in_tokens": 2075, "out_tokens": 37, "seconds": 1.087, "calls": ["read_file"], "forced": false}
+{"t": 52.4603, "kind": "tool", "name": "read_file", "args": {"start_line": 30, "end_line": 45, "path": "tests/test_formatutils.py"}, "ms": 0.05, "out_chars": 564}
+{"t": 59.8498, "kind": "llm", "step": 7, "in_tokens": 2352, "out_tokens": 20, "seconds": 0.976, "calls": ["search_log"], "forced": false}
+{"t": 59.8501, "kind": "tool", "name": "search_log", "args": {"pattern": "AssertionError: assert False"}, "ms": 0.13, "out_chars": 39}
+{"t": 67.7709, "kind": "llm", "step": 8, "in_tokens": 2396, "out_tokens": 232, "seconds": 1.397, "calls": ["submit_report"], "forced": false}
+{"t": 67.7711, "kind": "submit", "ok": false, "problems": ["culprit_file 'tests/test_formatutils.py' is not in the diff. Changed files: boltons/ecoutils.py, boltons/statsutils.py"]}
+{"t": 75.423, "kind": "llm", "step": 9, "in_tokens": 2692, "out_tokens": 161, "seconds": 1.549, "calls": ["submit_report"], "forced": true}
+{"t": 75.4232, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_get_fstr_args` fails because it relies on the iteration order of a `set` (`{\"alpha\", \"beta\", \"gamma\"}`) being deterministic, which it is not. The CI failure is due to this brittle test assertion that intermittently fails, and is unrelated to the changes made in the provided diff.", "suggested_action": "The test should be fixed to handle the unordered nature of the set (e.g., by sorting or using containment checks) instead of assuming a specific order. Since the test is outside of the changed files, I am classifying this as flaky for the purpose of this triage."}}
+{"t": 75.4234, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_get_fstr_args` fails because it relies on the iteration order of a `set` (`{\"alpha\", \"beta\", \"gamma\"}`) being deterministic, which it is not. The CI failure is due to this brittle test assertion that intermittently fails, and is unrelated to the changes made in the provided diff.", "suggested_action": "The test should be fixed to handle the unordered nature of the set (e.g., by sorting or using containment checks) instead of assuming a specific order. Since the test is outside of the changed files, I am classifying this as flaky for the purpose of this triage."}, "latency_seconds": 10.195}

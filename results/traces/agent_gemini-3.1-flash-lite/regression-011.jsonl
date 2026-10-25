@@ -1,0 +1,12 @@
+{"t": 0.0003, "kind": "case_start", "case": "regression-011", "system": "agent"}
+{"t": 6.806, "kind": "llm", "step": 0, "in_tokens": 936, "out_tokens": 18, "seconds": 0.748, "calls": ["read_log"], "forced": false}
+{"t": 6.8062, "kind": "tool", "name": "read_log", "args": {"num_lines": 100}, "ms": 0.04, "out_chars": 1568}
+{"t": 14.4473, "kind": "llm", "step": 1, "in_tokens": 1376, "out_tokens": 12, "seconds": 0.89, "calls": ["get_changed_functions"], "forced": false}
+{"t": 14.4627, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 15.17, "out_chars": 158}
+{"t": 25.2111, "kind": "llm", "step": 2, "in_tokens": 1451, "out_tokens": 38, "seconds": 4.153, "calls": ["read_file"], "forced": false}
+{"t": 25.2113, "kind": "tool", "name": "read_file", "args": {"path": "boltons/listutils.py", "end_line": 205, "start_line": 190}, "ms": 0.09, "out_chars": 829}
+{"t": 29.3362, "kind": "llm", "step": 3, "in_tokens": 1795, "out_tokens": 10, "seconds": 0.778, "calls": ["read_diff"], "forced": false}
+{"t": 29.3365, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.08, "out_chars": 14812}
+{"t": 38.3014, "kind": "llm", "step": 4, "in_tokens": 6191, "out_tokens": 157, "seconds": 2.243, "calls": ["submit_report"], "forced": false}
+{"t": 38.3016, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/listutils.py", "culprit_function": "BarrelList.del_slice", "confidence": "high", "evidence": "The change in boltons/listutils.py changed an 'or' to an 'and' in a conditional check for `stop`, causing `stop >= len(self)` to be evaluated when `stop` is `None`. This raises a TypeError as `None` cannot be compared to an integer.", "suggested_action": "Revert the 'and' back to an 'or' in the conditional check at line 198 of boltons/listutils.py."}}
+{"t": 38.3018, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/listutils.py", "culprit_function": "BarrelList.del_slice", "confidence": "high", "evidence": "The change in boltons/listutils.py changed an 'or' to an 'and' in a conditional check for `stop`, causing `stop >= len(self)` to be evaluated when `stop` is `None`. This raises a TypeError as `None` cannot be compared to an integer.", "suggested_action": "Revert the 'and' back to an 'or' in the conditional check at line 198 of boltons/listutils.py."}, "latency_seconds": 8.832}

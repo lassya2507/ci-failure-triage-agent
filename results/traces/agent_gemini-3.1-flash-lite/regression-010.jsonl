@@ -1,0 +1,12 @@
+{"t": 0.0001, "kind": "case_start", "case": "regression-010", "system": "agent"}
+{"t": 6.8533, "kind": "llm", "step": 0, "in_tokens": 1203, "out_tokens": 10, "seconds": 1.821, "calls": ["read_diff"], "forced": false}
+{"t": 6.8535, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.02, "out_chars": 1653}
+{"t": 24.8198, "kind": "llm", "step": 1, "in_tokens": 1787, "out_tokens": 23, "seconds": 12.288, "calls": ["read_log"], "forced": false}
+{"t": 24.8201, "kind": "tool", "name": "read_log", "args": {"start_line": 1, "num_lines": 20}, "ms": 0.06, "out_chars": 1369}
+{"t": 25.9837, "kind": "llm", "step": 2, "in_tokens": 2240, "out_tokens": 12, "seconds": 1.163, "calls": ["get_changed_functions"], "forced": false}
+{"t": 25.9976, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 13.74, "out_chars": 148}
+{"t": 48.2181, "kind": "llm", "step": 3, "in_tokens": 2318, "out_tokens": 37, "seconds": 15.898, "calls": ["read_file"], "forced": false}
+{"t": 48.2184, "kind": "tool", "name": "read_file", "args": {"path": "boltons/typeutils.py", "end_line": 110, "start_line": 90}, "ms": 0.13, "out_chars": 840}
+{"t": 49.6606, "kind": "llm", "step": 4, "in_tokens": 2654, "out_tokens": 155, "seconds": 1.442, "calls": ["submit_report"], "forced": false}
+{"t": 49.6608, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/typeutils.py", "culprit_function": "make_sentinel", "confidence": "high", "evidence": "The change in `boltons/typeutils.py` accidentally inverted the condition `if not module or module not in sys.modules:` to `if not module or module in sys.modules:`. This caused `make_sentinel` to raise a ValueError for all top-level module scopes, breaking the library.", "suggested_action": "Revert the condition in `boltons/typeutils.py` to `if not module or module not in sys.modules:`."}}
+{"t": 49.661, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/typeutils.py", "culprit_function": "make_sentinel", "confidence": "high", "evidence": "The change in `boltons/typeutils.py` accidentally inverted the condition `if not module or module not in sys.modules:` to `if not module or module in sys.modules:`. This caused `make_sentinel` to raise a ValueError for all top-level module scopes, breaking the library.", "suggested_action": "Revert the condition in `boltons/typeutils.py` to `if not module or module not in sys.modules:`."}, "latency_seconds": 32.63}

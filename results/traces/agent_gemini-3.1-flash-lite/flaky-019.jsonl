@@ -1,0 +1,16 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-019", "system": "agent"}
+{"t": 3.2194, "kind": "llm", "step": 0, "in_tokens": 915, "out_tokens": 10, "seconds": 0.704, "calls": ["read_diff"], "forced": false}
+{"t": 3.2196, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 317}
+{"t": 10.7814, "kind": "llm", "step": 1, "in_tokens": 1043, "out_tokens": 12, "seconds": 0.766, "calls": ["get_changed_functions"], "forced": false}
+{"t": 10.7948, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 13.13, "out_chars": 37}
+{"t": 18.2881, "kind": "llm", "step": 2, "in_tokens": 1082, "out_tokens": 29, "seconds": 0.772, "calls": ["search_log"], "forced": false}
+{"t": 18.2885, "kind": "tool", "name": "search_log", "args": {"pattern": "FAILED tests/test_iterutils.py::test_lstrip"}, "ms": 0.17, "out_chars": 65}
+{"t": 26.08, "kind": "llm", "step": 3, "in_tokens": 1150, "out_tokens": 16, "seconds": 1.064, "calls": ["read_log"], "forced": false}
+{"t": 26.0801, "kind": "tool", "name": "read_log", "args": {"start_line": 1}, "ms": 0.03, "out_chars": 1398}
+{"t": 33.3597, "kind": "llm", "step": 4, "in_tokens": 1556, "out_tokens": 39, "seconds": 0.843, "calls": ["read_file"], "forced": false}
+{"t": 33.36, "kind": "tool", "name": "read_file", "args": {"start_line": 590, "path": "tests/test_iterutils.py", "end_line": 610}, "ms": 0.12, "out_chars": 1067}
+{"t": 40.9307, "kind": "llm", "step": 5, "in_tokens": 2138, "out_tokens": 31, "seconds": 0.914, "calls": ["rerun_test"], "forced": false}
+{"t": 40.9309, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_iterutils.py::test_lstrip"}, "ms": 0.02, "out_chars": 160}
+{"t": 48.6139, "kind": "llm", "step": 6, "in_tokens": 2229, "out_tokens": 132, "seconds": 1.097, "calls": ["submit_report"], "forced": false}
+{"t": 48.6141, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_lstrip` failed with an `assert 9 < 7` error because it relies on `random.shuffle(items)` and `items.index(0)`, which can result in `0` being at an index >= 7. The failure is nondeterministic and independent of the changes to `boltons/fileutils.py`. The test passed on a rerun.", "suggested_action": "Fix the test to use a fixed seed or a more robust assertion."}}
+{"t": 48.6143, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_lstrip` failed with an `assert 9 < 7` error because it relies on `random.shuffle(items)` and `items.index(0)`, which can result in `0` being at an index >= 7. The failure is nondeterministic and independent of the changes to `boltons/fileutils.py`. The test passed on a rerun.", "suggested_action": "Fix the test to use a fixed seed or a more robust assertion."}, "latency_seconds": 6.563}

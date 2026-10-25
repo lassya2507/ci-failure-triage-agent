@@ -1,0 +1,18 @@
+{"t": 0.0, "kind": "case_start", "case": "regression-037", "system": "agent"}
+{"t": 8.3989, "kind": "llm", "step": 0, "in_tokens": 921, "out_tokens": 10, "seconds": 2.448, "calls": ["read_log"], "forced": false}
+{"t": 8.3991, "kind": "tool", "name": "read_log", "args": {}, "ms": 0.03, "out_chars": 1361}
+{"t": 22.3955, "kind": "llm", "step": 1, "in_tokens": 1288, "out_tokens": 12, "seconds": 8.944, "calls": ["get_changed_functions"], "forced": false}
+{"t": 22.4072, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 11.56, "out_chars": 88}
+{"t": 28.9874, "kind": "llm", "step": 2, "in_tokens": 1344, "out_tokens": 10, "seconds": 6.58, "calls": ["read_diff"], "forced": false}
+{"t": 28.9876, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 830}
+{"t": 34.4728, "kind": "llm", "step": 3, "in_tokens": 1640, "out_tokens": 22, "seconds": 4.565, "calls": ["read_file"], "forced": false}
+{"t": 34.4731, "kind": "tool", "name": "read_file", "args": {"path": "boltons/formatutils.py"}, "ms": 0.13, "out_chars": 4914}
+{"t": 38.3915, "kind": "llm", "step": 4, "in_tokens": 3164, "out_tokens": 18, "seconds": 0.983, "calls": ["search_log"], "forced": false}
+{"t": 38.3917, "kind": "tool", "name": "search_log", "args": {"pattern": "class DeferredValue"}, "ms": 0.11, "out_chars": 10}
+{"t": 51.5686, "kind": "llm", "step": 5, "in_tokens": 3197, "out_tokens": 18, "seconds": 6.66, "calls": ["search_log"], "forced": false}
+{"t": 51.5688, "kind": "tool", "name": "search_log", "args": {"pattern": "class DeferredValue"}, "ms": 0.03, "out_chars": 10}
+{"t": 53.8103, "kind": "llm", "step": 6, "in_tokens": 3230, "out_tokens": 30, "seconds": 1.402, "calls": ["read_file"], "forced": false}
+{"t": 53.8106, "kind": "tool", "name": "read_file", "args": {"path": "boltons/formatutils.py", "start_line": 260}, "ms": 0.14, "out_chars": 3843}
+{"t": 62.5096, "kind": "llm", "step": 7, "in_tokens": 4638, "out_tokens": 203, "seconds": 2.601, "calls": ["submit_report"], "forced": false}
+{"t": 62.5098, "kind": "submit", "ok": true, "report": {"category": "regression", "culprit_file": "boltons/formatutils.py", "culprit_function": "DeferredValue.get_value", "confidence": "high", "evidence": "The diff changed the conditional logic in `DeferredValue.get_value` from `if self._value is not _UNSET and self.cache_value:` to `if self._value is _UNSET and self.cache_value:`. This reversed the intended logic, causing the code to try returning an unset value instead of calling the provided function. As a result, string conversion fails because it returns the `_UNSET` sentinel object instead of the computed value.", "suggested_action": "Revert the conditional check to correctly check if `_value` is set, or simply use `if self._value is _UNSET:` as the condition for when to call `self.func()`."}}
+{"t": 62.51, "kind": "case_end", "report": {"category": "regression", "culprit_file": "boltons/formatutils.py", "culprit_function": "DeferredValue.get_value", "confidence": "high", "evidence": "The diff changed the conditional logic in `DeferredValue.get_value` from `if self._value is not _UNSET and self.cache_value:` to `if self._value is _UNSET and self.cache_value:`. This reversed the intended logic, causing the code to try returning an unset value instead of calling the provided function. As a result, string conversion fails because it returns the `_UNSET` sentinel object instead of the computed value.", "suggested_action": "Revert the conditional check to correctly check if `_value` is set, or simply use `if self._value is _UNSET:` as the condition for when to call `self.func()`."}, "latency_seconds": 34.201}

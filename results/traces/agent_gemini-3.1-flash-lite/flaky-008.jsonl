@@ -1,0 +1,18 @@
+{"t": 0.0, "kind": "case_start", "case": "flaky-008", "system": "agent"}
+{"t": 5.198, "kind": "llm", "step": 0, "in_tokens": 923, "out_tokens": 18, "seconds": 0.742, "calls": ["read_log"], "forced": false}
+{"t": 5.1983, "kind": "tool", "name": "read_log", "args": {"num_lines": 150}, "ms": 0.05, "out_chars": 1698}
+{"t": 16.3476, "kind": "llm", "step": 1, "in_tokens": 1406, "out_tokens": 30, "seconds": 4.391, "calls": ["read_file"], "forced": false}
+{"t": 16.3478, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_formatutils.py", "start_line": 45}, "ms": 0.04, "out_chars": 989}
+{"t": 20.5037, "kind": "llm", "step": 2, "in_tokens": 1852, "out_tokens": 10, "seconds": 1.047, "calls": ["read_diff"], "forced": false}
+{"t": 20.504, "kind": "tool", "name": "read_diff", "args": {}, "ms": 0.01, "out_chars": 696}
+{"t": 27.985, "kind": "llm", "step": 3, "in_tokens": 2121, "out_tokens": 12, "seconds": 1.028, "calls": ["get_changed_functions"], "forced": false}
+{"t": 27.9977, "kind": "tool", "name": "get_changed_functions", "args": {}, "ms": 12.54, "out_chars": 80}
+{"t": 35.5469, "kind": "llm", "step": 4, "in_tokens": 2174, "out_tokens": 24, "seconds": 1.09, "calls": ["search_log"], "forced": false}
+{"t": 35.5472, "kind": "tool", "name": "search_log", "args": {"pattern": "test_tokenize_format_str.*FAILED"}, "ms": 0.15, "out_chars": 10}
+{"t": 42.7048, "kind": "llm", "step": 5, "in_tokens": 2213, "out_tokens": 29, "seconds": 0.748, "calls": ["read_file"], "forced": false}
+{"t": 42.705, "kind": "tool", "name": "read_file", "args": {"path": "tests/test_formatutils.py", "start_line": 1}, "ms": 0.07, "out_chars": 2721}
+{"t": 50.8941, "kind": "llm", "step": 6, "in_tokens": 3303, "out_tokens": 34, "seconds": 1.437, "calls": ["rerun_test"], "forced": false}
+{"t": 50.8943, "kind": "tool", "name": "rerun_test", "args": {"test_id": "tests/test_formatutils.py::test_tokenize_format_str"}, "ms": 0.01, "out_chars": 175}
+{"t": 58.5864, "kind": "llm", "step": 7, "in_tokens": 3400, "out_tokens": 144, "seconds": 1.629, "calls": ["submit_report"], "forced": false}
+{"t": 58.5866, "kind": "submit", "ok": true, "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_tokenize_format_str` failed due to an `AssertionError` at `assert \",\".join(labels).startswith(\"alpha\")` because `set` ordering is non-deterministic in Python. The test passed upon rerun. The changes to `boltons/formatutils.py` and `boltons/mathutils.py` are unrelated to this test's logic.", "suggested_action": "The test should be updated to use a sorted list or explicitly check for inclusion instead of relying on the iteration order of a set."}}
+{"t": 58.5867, "kind": "case_end", "report": {"category": "flaky", "culprit_file": null, "culprit_function": null, "confidence": "high", "evidence": "The test `test_tokenize_format_str` failed due to an `AssertionError` at `assert \",\".join(labels).startswith(\"alpha\")` because `set` ordering is non-deterministic in Python. The test passed upon rerun. The changes to `boltons/formatutils.py` and `boltons/mathutils.py` are unrelated to this test's logic.", "suggested_action": "The test should be updated to use a sorted list or explicitly check for inclusion instead of relying on the iteration order of a set."}, "latency_seconds": 12.425}
